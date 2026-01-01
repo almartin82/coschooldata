@@ -60,6 +60,7 @@ The package supports three format eras:
 \seealso{
 Useful links:
 \itemize{
+  \item \url{https://almartin82.github.io/coschooldata}
   \item \url{https://github.com/almartin82/coschooldata}
   \item Report bugs at \url{https://github.com/almartin82/coschooldata/issues}
 }
