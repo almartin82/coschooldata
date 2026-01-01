@@ -4,10 +4,12 @@
 \alias{fetch_enr_multi}
 \title{Fetch enrollment data for multiple years}
 \usage{
-fetch_enr_multi(end_years, use_cache = TRUE)
+fetch_enr_multi(end_years, tidy = TRUE, use_cache = TRUE)
 }
 \arguments{
 \item{end_years}{Vector of school year ends (e.g., c(2022, 2023, 2024))}
+
+\item{tidy}{If TRUE (default), returns data in tidy format.}
 
 \item{use_cache}{If TRUE (default), uses locally cached data when available.}
 }

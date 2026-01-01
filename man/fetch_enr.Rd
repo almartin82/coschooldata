@@ -4,10 +4,12 @@
 \alias{fetch_enr}
 \title{Fetch Colorado enrollment data}
 \usage{
-fetch_enr(end_year, use_cache = TRUE)
+fetch_enr(end_year, tidy = TRUE, use_cache = TRUE)
 }
 \arguments{
 \item{end_year}{School year end (2023-24 = 2024).}
+
+\item{tidy}{If TRUE (default), returns data in tidy format.}
 
 \item{use_cache}{If TRUE (default), uses locally cached data when available.}
 }
