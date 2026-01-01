@@ -5,8 +5,16 @@ template:
 
 home:
   links:
+  - text: "10 Insights from Colorado Enrollment Data"
+    href: articles/enrollment_hooks.html
   - text: "Part of the 50 State Schooldata Family"
     href: https://github.com/almartin82/njschooldata
+
+articles:
+- title: Key Insights
+  navbar: ~
+  contents:
+  - enrollment_hooks
 
 reference:
 - title: Fetch Data
@@ -14,12 +22,6 @@ reference:
   - fetch_enr
   - fetch_enr_multi
   - get_available_years
-
-- title: Process & Tidy
-  contents:
-  - tidy_enr
-  - id_enr_aggs
-  - enr_grade_aggs
 
 - title: Cache Management
   contents:
