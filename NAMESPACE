@@ -3,4 +3,5 @@
 export("%>%")
 export(cache_status)
 export(clear_cache)
+export(get_available_years)
 importFrom(dplyr,"%>%")

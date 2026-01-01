@@ -2,20 +2,30 @@
 # Utility Functions
 # ==============================================================================
 
-#' Pipe operator
-#'
-#' See \code{dplyr::\link[dplyr:reexports]{\%>\%}} for details.
-#'
-#' @name %>%
-#' @rdname pipe
-#' @keywords internal
-#' @export
-#' @importFrom dplyr %>%
-#' @usage lhs \%>\% rhs
-#' @param lhs A value or the magrittr placeholder.
-#' @param rhs A function call using the magrittr semantics.
-#' @return The result of calling `rhs(lhs)`.
+#' @importFrom rlang .data
 NULL
+
+
+#' Get available years for Colorado enrollment data
+#'
+#' Returns the range of school years for which enrollment data is available
+#' from the Colorado Department of Education.
+#'
+#' @return A list with three elements:
+#'   \item{min_year}{The earliest available school year end (e.g., 2009 for 2008-09)}
+#'   \item{max_year}{The latest available school year end (e.g., 2025 for 2024-25)}
+#'   \item{description}{Human-readable description of data availability}
+#' @export
+#' @examples
+#' get_available_years()
+#' # Returns list with min_year, max_year, and description
+get_available_years <- function() {
+  list(
+    min_year = 2009,
+    max_year = 2025,
+    description = "Colorado enrollment data is available from 2008-09 (end_year 2009) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education."
+  )
+}
 
 
 #' Convert school year string to end year
