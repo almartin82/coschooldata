@@ -4,6 +4,7 @@
 [![R-CMD-check](https://github.com/almartin82/coschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/R-CMD-check.yaml)
 [![Python Tests](https://github.com/almartin82/coschooldata/actions/workflows/python-test.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/python-test.yaml)
 [![pkgdown](https://github.com/almartin82/coschooldata/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/pkgdown.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 Fetch and analyze Colorado school enrollment data from the Colorado Department of Education (CDE) in R or Python.
