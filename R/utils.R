@@ -21,9 +21,9 @@ NULL
 #' # Returns list with min_year, max_year, and description
 get_available_years <- function() {
   list(
-    min_year = 2009,
+    min_year = 2018,
     max_year = 2025,
-    description = "Colorado enrollment data is available from 2008-09 (end_year 2009) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education."
+    description = "Colorado enrollment data is available from 2017-18 (end_year 2018) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education."
   )
 }
 

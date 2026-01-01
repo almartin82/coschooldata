@@ -27,7 +27,7 @@ library(ggplot2)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 17 years of data (2009-2025).
+This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 8 years of data (2018-2025).
 
 ---
 
@@ -36,7 +36,7 @@ This vignette explores Colorado's public school enrollment data, surfacing key t
 Colorado public schools grew steadily from 2009 to 2019, adding over 100,000 students. Since COVID, enrollment has been flat to declining.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(2009:2025)
+enr <- fetch_enr_multi(2018:2025)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
