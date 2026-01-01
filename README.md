@@ -2,10 +2,11 @@
 
 <!-- badges: start -->
 [![R-CMD-check](https://github.com/almartin82/coschooldata/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/R-CMD-check.yaml)
+[![Python Tests](https://github.com/almartin82/coschooldata/actions/workflows/python-test.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/python-test.yaml)
 [![pkgdown](https://github.com/almartin82/coschooldata/actions/workflows/pkgdown.yaml/badge.svg)](https://github.com/almartin82/coschooldata/actions/workflows/pkgdown.yaml)
 <!-- badges: end -->
 
-Fetch and analyze Colorado public school enrollment data from the Colorado Department of Education (CDE).
+Fetch and analyze Colorado school enrollment data from the Colorado Department of Education (CDE) in R or Python.
 
 **[Documentation](https://almartin82.github.io/coschooldata/)** | **[Getting Started](https://almartin82.github.io/coschooldata/articles/quickstart.html)**
 
@@ -205,6 +206,8 @@ remotes::install_github("almartin82/coschooldata")
 
 ## Quick start
 
+### R
+
 ```r
 library(coschooldata)
 library(dplyr)
@@ -229,6 +232,39 @@ enr_2025 %>%
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("hispanic", "white", "black", "asian")) %>%
   select(subgroup, n_students, pct)
+```
+
+### Python
+
+```python
+import pycoschooldata as co
+
+# Fetch one year
+enr_2025 = co.fetch_enr(2025)
+
+# Fetch multiple years
+enr_multi = co.fetch_enr_multi([2020, 2021, 2022, 2023, 2024, 2025])
+
+# State totals
+state_total = enr_2025[
+    (enr_2025['is_state'] == True) &
+    (enr_2025['subgroup'] == 'total_enrollment') &
+    (enr_2025['grade_level'] == 'TOTAL')
+]
+
+# District breakdown
+districts = enr_2025[
+    (enr_2025['is_district'] == True) &
+    (enr_2025['subgroup'] == 'total_enrollment') &
+    (enr_2025['grade_level'] == 'TOTAL')
+].sort_values('n_students', ascending=False)
+
+# Demographics
+demographics = enr_2025[
+    (enr_2025['is_state'] == True) &
+    (enr_2025['grade_level'] == 'TOTAL') &
+    (enr_2025['subgroup'].isin(['hispanic', 'white', 'black', 'asian']))
+][['subgroup', 'n_students', 'pct']]
 ```
 
 ## Data availability
