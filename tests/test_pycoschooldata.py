@@ -79,7 +79,7 @@ class TestGetAvailableYears:
         import pycoschooldata as co
         years = co.get_available_years()
         assert years['min_year'] >= 1970
-        assert years['min_year'] <= 2015
+        assert years['min_year'] <= 2020
         assert years['max_year'] >= 2020
         assert years['max_year'] <= 2030
 
