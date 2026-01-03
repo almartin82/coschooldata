@@ -13,7 +13,7 @@ NULL
 #'
 #' @return A list with three elements:
 #'   \item{min_year}{The earliest available school year end (e.g., 2009 for 2008-09)}
-#'   \item{max_year}{The latest available school year end (e.g., 2025 for 2024-25)}
+#'   \item{max_year}{The latest available school year end (e.g., 2024 for 2023-24)}
 #'   \item{description}{Human-readable description of data availability}
 #' @export
 #' @examples
@@ -22,8 +22,8 @@ NULL
 get_available_years <- function() {
   list(
     min_year = 2018,
-    max_year = 2025,
-    description = "Colorado enrollment data is available from 2017-18 (end_year 2018) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education."
+    max_year = 2024,
+    description = "Colorado enrollment data is available from 2017-18 (end_year 2018) through 2023-24 (end_year 2024). Data comes from the Student October Count collection published by the Colorado Department of Education."
   )
 }
 
