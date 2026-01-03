@@ -33,10 +33,10 @@ get_available_years()
 #> [1] 2018
 #> 
 #> $max_year
-#> [1] 2025
+#> [1] 2024
 #> 
 #> $description
-#> [1] "Colorado enrollment data is available from 2017-18 (end_year 2018) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education."
+#> [1] "Colorado enrollment data is available from 2017-18 (end_year 2018) through 2023-24 (end_year 2024). Data comes from the Student October Count collection published by the Colorado Department of Education."
 #> 
 # Returns list with min_year, max_year, and description
 ```
