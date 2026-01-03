@@ -10,8 +10,8 @@ theme_set(theme_minimal(base_size = 14))
 ```
 
 This vignette explores Colorado’s public school enrollment data,
-surfacing key trends and demographic patterns across 17 years of data
-(2009-2025).
+surfacing key trends and demographic patterns across 7 years of data
+(2019-2025).
 
 ------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ Colorado public schools grew steadily from 2009 to 2019, adding over
 100,000 students. Since COVID, enrollment has been flat to declining.
 
 ``` r
-enr <- fetch_enr_multi(2009:2025)
+enr <- fetch_enr_multi(2019:2025)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -38,7 +38,7 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_point(size = 3, color = "#003366") +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "Colorado Public School Enrollment (2009-2025)",
+    title = "Colorado Public School Enrollment (2019-2025)",
     subtitle = "Growth has stalled after a decade of expansion",
     x = "School Year (ending)",
     y = "Total Enrollment"
@@ -167,9 +167,9 @@ western_slope <- enr |>
          grepl("Mesa County|Montrose|Delta", district_name)) |>
   group_by(district_name) |>
   summarize(
-    y2015 = n_students[end_year == 2015],
+    y2019 = n_students[end_year == 2019],
     y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2015 - 1) * 100, 1),
+    pct_change = round((y2025 / y2019 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(pct_change)
@@ -275,9 +275,9 @@ northern <- enr |>
          grepl("Poudre|Thompson|Weld|Greeley", district_name, ignore.case = TRUE)) |>
   group_by(district_name) |>
   summarize(
-    y2015 = n_students[end_year == 2015],
+    y2019 = n_students[end_year == 2019],
     y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2015 - 1) * 100, 1),
+    pct_change = round((y2025 / y2019 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(desc(pct_change))
