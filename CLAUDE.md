@@ -4,10 +4,166 @@
 
 ---
 
+# coschooldata Package - Colorado School Enrollment Data
 
-# Claude Code Instructions
+## Current Status: SERVER DOWN (as of January 2026)
+
+The primary data server `www.cde.state.co.us` is **COMPLETELY UNREACHABLE** (connection refused). A new site `ed.cde.state.co.us` hosts pages but data files still reference the old domain.
+
+### Data Source Investigation Summary
+
+**Date of Investigation:** 2026-01-03
+
+#### Server Status
+
+| Domain | Status | Notes |
+|--------|--------|-------|
+| `www.cde.state.co.us` | **DOWN** | Connection refused (ICMP 100% loss) |
+| `ed.cde.state.co.us` | **UP** | New site, pages work, but file links point to old domain |
+| `data.colorado.gov` | **UP** | Has higher education data, NOT K-12 enrollment |
+
+#### Pages Checked
+
+| URL | Status | Content |
+|-----|--------|---------|
+| https://ed.cde.state.co.us | HTTP 200 | New CDE homepage |
+| https://ed.cde.state.co.us/cdereval/pupilmembership-statistics | HTTP 200 | Enrollment data page - lists files but links are broken |
+| https://ed.cde.state.co.us/cdereval/pupilmembership-statistics/data-insights-resources-archives | HTTP 200 | Archive page - same issue |
+| https://www.cde.state.co.us/cdereval/pupilcurrent | **CONN REFUSED** | Old pupil data page |
+| https://www.cde.state.co.us/schoolview | **CONN REFUSED** | SchoolView portal |
+
+#### File URLs (All Broken)
+
+All data file URLs point to `www.cde.state.co.us` which is DOWN:
+
+| File | Expected URL | Status |
+|------|--------------|--------|
+| 2024-25 Grade Level by School | `/cdereval/2024-25pk-12membershipgradelevelbyschool` | CONN REFUSED |
+| 2024-25 Race/Ethnicity by School | `/cdereval/2024-25pk-12membershipraceethnicitygendergradeandschool` | CONN REFUSED |
+| 2023-24 Grade Level by School | `/cdereval/2023-24pk-12membershipgradelevelbyschool` | CONN REFUSED |
+| All historical files | Various patterns | CONN REFUSED |
+
+#### Alternative Sources Checked
+
+| Source | Status | Notes |
+|--------|--------|-------|
+| data.colorado.gov | UP | Only has higher education data, NOT K-12 enrollment |
+| Colorado School Finance Project | UP | PDF reports only, no raw data |
+| Wayback Machine | Empty | No archives of enrollment files found |
+
+---
+
+## Impact
+
+- **Package cannot download enrollment data** - all Excel files are on the DOWN server
+- **`fetch_enr()` will fail** with connection error
+- **Cached data (if any) will work** - check with `cache_status()`
+- **Tests skip gracefully** - 8 tests skip when server is down
+
+---
+
+## Package Functions
+
+### When Server is Up
+
+```r
+# Download enrollment data
+enr <- fetch_enr(2024, tidy = TRUE)
+
+# Get multiple years
+enr_multi <- fetch_enr_multi(2022:2024)
+
+# Check available years
+get_available_years()
+```
+
+### When Server is Down (Current State)
+
+```r
+# Check server status
+check_server("https://www.cde.state.co.us")
+
+# Check cache for previously downloaded data
+cache_status()
+
+# If you have cached data
+enr <- fetch_enr(2024, use_cache = TRUE)
+```
+
+---
+
+## Required Actions to Fix Data Source
+
+### Option 1: Wait for Colorado to Restore Server (Recommended)
+- Monitor: https://www.cde.state.co.us
+- The server may be temporarily down for maintenance or migration
+
+### Option 2: Contact Colorado CDE
+- Phone: 303-866-6600
+- Website: https://ed.cde.state.co.us
+- Ask about:
+  - When will `www.cde.state.co.us` be restored?
+  - Are files being migrated to `ed.cde.state.co.us`?
+  - Is there an API for enrollment data?
+
+### Option 3: Update Package When Files Move
+When CDE migrates files to `ed.cde.state.co.us`, update:
+1. `R/url_discovery.R` - Update base URLs
+2. `R/get_raw_enrollment.R` - Update download URLs
+3. Test with `devtools::test(filter = "pipeline-live")`
+
+### DO NOT USE
+- Urban Institute Education Data Portal
+- NCES CCD data
+- Any federal data aggregation
+
+---
+
+## LIVE Pipeline Testing
+
+The package includes comprehensive LIVE tests in `tests/testthat/test-pipeline-live.R`:
+
+### Test Categories
+
+1. **Server Status Tests** - Document which domains are reachable
+2. **URL Availability Tests** - Check pages and file URLs
+3. **Archive Page Tests** - Verify ed.cde.state.co.us pages work
+4. **File Download Tests** - Test actual downloads (when server up)
+5. **File Parsing Tests** - Read with readxl
+6. **Package Function Tests** - get_raw_enr(), fetch_enr()
+7. **Data Quality Tests** - No Inf/NaN, non-negative counts
+8. **Aggregation Tests** - State totals positive
+9. **Cache Tests** - Cache functions work
+10. **Output Fidelity Tests** - tidy=TRUE consistent with tidy=FALSE
+
+### Running Tests
+
+```r
+# All tests
+devtools::test()
+
+# Pipeline tests only
+devtools::test(filter = "pipeline-live")
+```
+
+### Expected Results (When Server Down)
+
+```
+[ FAIL 0 | WARN 0 | SKIP 8 | PASS 30 ]
+```
+
+The 8 skipped tests are expected when `www.cde.state.co.us` is down.
+
+---
+
+## Available Years
+
+**When working:** 2020-2025 (October 1 pupil count data)
+
+---
 
 ## Git Commits and PRs
+
 - NEVER reference Claude, Claude Code, or AI assistance in commit messages
 - NEVER reference Claude, Claude Code, or AI assistance in PR descriptions
 - NEVER add Co-Authored-By lines mentioning Claude or Anthropic
@@ -18,16 +174,6 @@
 ## Local Testing Before PRs (REQUIRED)
 
 **PRs will not be merged until CI passes.** Run these checks locally BEFORE opening a PR:
-
-### CI Checks That Must Pass
-
-| Check | Local Command | What It Tests |
-|-------|---------------|---------------|
-| R-CMD-check | `devtools::check()` | Package builds, tests pass, no errors/warnings |
-| Python tests | `pytest tests/test_pycoschooldata.py -v` | Python wrapper works correctly |
-| pkgdown | `pkgdown::build_site()` | Documentation and vignettes render |
-
-### Quick Commands
 
 ```r
 # R package check (required)
@@ -42,7 +188,6 @@ pkgdown::build_site()
 
 ### Pre-PR Checklist
 
-Before opening a PR, verify:
 - [ ] `devtools::check()` — 0 errors, 0 warnings
 - [ ] `pytest tests/test_pycoschooldata.py` — all tests pass
 - [ ] `pkgdown::build_site()` — builds without errors
@@ -50,24 +195,9 @@ Before opening a PR, verify:
 
 ---
 
-## LIVE Pipeline Testing
+## Test Results Summary
 
-This package includes `tests/testthat/test-pipeline-live.R` with LIVE network tests.
-
-### Test Categories:
-1. URL Availability - HTTP 200 checks
-2. File Download - Verify actual file (not HTML error)
-3. File Parsing - readxl/readr succeeds
-4. Column Structure - Expected columns exist
-5. get_raw_enr() - Raw data function works
-6. Data Quality - No Inf/NaN, non-negative counts
-7. Aggregation - State total > 0
-8. Output Fidelity - tidy=TRUE matches raw
-
-### Running Tests:
-```r
-devtools::test(filter = "pipeline-live")
-```
-
-See `state-schooldata/CLAUDE.md` for complete testing framework documentation.
-
+**As of 2026-01-03:**
+- 30 tests passing
+- 0 tests failing
+- 8 tests skipped (server down - expected)

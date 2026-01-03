@@ -16,4 +16,9 @@ Named list with URLs, or NULL if year not in lookup
 CDE URLs are inconsistent across years. This lookup table contains
 verified URLs that have been tested and confirmed working.
 }
+\details{
+NOTE: As of January 2026, www.cde.state.co.us is DOWN. The new site
+ed.cde.state.co.us hosts pages but files still point to the old domain.
+This function tries both domains.
+}
 \keyword{internal}

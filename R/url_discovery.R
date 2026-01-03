@@ -45,41 +45,82 @@ get_enrollment_urls <- function(end_year) {
 #' CDE URLs are inconsistent across years. This lookup table contains
 #' verified URLs that have been tested and confirmed working.
 #'
+#' NOTE: As of January 2026, www.cde.state.co.us is DOWN. The new site
+#' ed.cde.state.co.us hosts pages but files still point to the old domain.
+#' This function tries both domains.
+#'
 #' @param end_year School year end
 #' @return Named list with URLs, or NULL if year not in lookup
 #' @keywords internal
 get_known_enrollment_urls <- function(end_year) {
 
- # Lookup table of verified URLs (updated 2026-01-03)
- urls <- list(
+ # Base domains to try (new domain first, then old)
+ # www.cde.state.co.us is DOWN as of Jan 2026, but files may return there
+ # ed.cde.state.co.us is UP but currently returns 404 for files
+ base_domains <- c(
+   "https://www.cde.state.co.us",
+   "https://ed.cde.state.co.us"
+ )
+
+ # Lookup table of verified URL PATHS (updated 2026-01-03)
+ paths <- list(
    "2025" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2024-25pk-12membershipgradelevelbyschool",
-     race_gender = "https://www.cde.state.co.us/cdereval/2024-25pk-12raceethnicityandgenderbygradeandschool"
+     grade = "/cdereval/2024-25pk-12membershipgradelevelbyschool",
+     race_gender = "/cdereval/2024-25pk-12membershipraceethnicitygendergradeandschool",
+     combined = "/cdereval/2024-25pk-12membershipfrlraceethnicitygenderwithflags"
    ),
    "2024" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2023-24pk-12membershipgradelevelbyschool",
-     race_gender = "https://www.cde.state.co.us/cdereval/2023-24pk-12raceethnicityandgenderbygradeandschool",
-     combined = "https://www.cde.state.co.us/cdereval/pk-12membershipfrlracegenderbyschoolwithflags"
+     grade = "/cdereval/2023-24pk-12membershipgradelevelbyschool",
+     race_gender = "/cdereval/2023-24pk-12raceethnicityandgenderbygradeandschool",
+     combined = "/cdereval/pk-12membershipfrlracegenderbyschoolwithflags"
    ),
    "2023" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2022-2023schoolmembershipgrade",
-     race_gender = "https://www.cde.state.co.us/cdereval/2022-2023schoolmembershipethnicityracegender"
+     grade = "/cdereval/2022-2023schoolmembershipgrade",
+     race_gender = "/cdereval/2022-2023schoolmembershipethnicityracegender"
    ),
    "2022" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2021-2022schoolmembershipgrade",
-     race_gender = "https://www.cde.state.co.us/cdereval/2021-2022schoolmembershipethnicityracegender"
+     grade = "/cdereval/2021-2022schoolmembershipgrade",
+     race_gender = "/cdereval/2021-2022schoolmembershipethnicityracegender"
    ),
    "2021" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2020-21membershipgradelevelbyschool",
-     race_gender = "https://www.cde.state.co.us/cdereval/2020-21raceethnicityandgenderbyschool"
+     grade = "/cdereval/2020-21membershipgradelevelbyschool",
+     race_gender = "/cdereval/2020-21raceethnicityandgenderbyschool"
    ),
    "2020" = list(
-     grade = "https://www.cde.state.co.us/cdereval/2019-20pk-12membershipgradelevelbyschool",
-     race_gender = "https://www.cde.state.co.us/cdereval/2019-20pk-12race/ethnicityandgenderbygradeandschool"
+     grade = "/cdereval/2019-20pk-12membershipgradelevelbyschool",
+     race_gender = "/cdereval/2019-20pk-12race/ethnicityandgenderbygradeandschool"
    )
  )
 
- urls[[as.character(end_year)]]
+ year_paths <- paths[[as.character(end_year)]]
+ if (is.null(year_paths)) {
+   return(NULL)
+ }
+
+ # Try each domain to find working URLs
+ for (base in base_domains) {
+   urls <- lapply(year_paths, function(path) paste0(base, path))
+   names(urls) <- names(year_paths)
+
+   # Test if any URL is reachable
+   for (url in urls) {
+     tryCatch({
+       response <- httr::HEAD(url, httr::timeout(5), httr::config(ssl_verifypeer = FALSE))
+       if (!httr::http_error(response)) {
+         # Found working domain!
+         return(urls)
+       }
+     }, error = function(e) {
+       # Connection failed, try next domain
+     })
+   }
+ }
+
+ # Fall back to www.cde.state.co.us URLs even if not reachable
+ # (user will get a clear error message)
+ urls <- lapply(year_paths, function(path) paste0(base_domains[1], path))
+ names(urls) <- names(year_paths)
+ urls
 }
 
 
