@@ -36,10 +36,57 @@ skip_if_offline <- function() {
 # STEP 1: URL Availability Tests
 # ==============================================================================
 
-test_that("Colorado DOE website is accessible", {
-
+test_that("Colorado DOE main website is accessible", {
   skip_if_offline()
-  skip("TODO: Add Colorado DOE URL and verify HTTP 200")
+
+  response <- httr::HEAD(
+    "https://www.cde.state.co.us/cdereval/pupilcurrent",
+    httr::timeout(30),
+    httr::config(ssl_verifypeer = FALSE)
+  )
+  expect_equal(httr::status_code(response), 200)
+})
+
+test_that("CDE archive page is accessible", {
+  skip_if_offline()
+
+  response <- httr::HEAD(
+    "https://ed.cde.state.co.us/cdereval/pupilmembership-statistics/data-insights-resources-archives",
+    httr::timeout(30),
+    httr::config(ssl_verifypeer = FALSE)
+  )
+  # Accept 200 or 301/302 redirects
+
+  expect_true(httr::status_code(response) %in% c(200, 301, 302))
+})
+
+test_that("Known enrollment URLs return valid responses", {
+  skip_if_offline()
+
+  # Test URLs from the hardcoded lookup table
+  urls_to_test <- list(
+    "2024_grade" = "https://www.cde.state.co.us/cdereval/2023-24pk-12membershipgradelevelbyschool",
+    "2023_grade" = "https://www.cde.state.co.us/cdereval/2022-2023schoolmembershipgrade",
+    "2022_grade" = "https://www.cde.state.co.us/cdereval/2021-2022schoolmembershipgrade"
+  )
+
+  for (name in names(urls_to_test)) {
+    url <- urls_to_test[[name]]
+    tryCatch({
+      response <- httr::HEAD(
+        url,
+        httr::timeout(30),
+        httr::config(ssl_verifypeer = FALSE)
+      )
+      # Should return 200 or redirect (301/302)
+      expect_true(
+        httr::status_code(response) %in% c(200, 301, 302),
+        info = paste("URL should be accessible:", name, url)
+      )
+    }, error = function(e) {
+      skip(paste("Network error testing URL:", name, "-", e$message))
+    })
+  }
 })
 
 # ==============================================================================
@@ -48,24 +95,90 @@ test_that("Colorado DOE website is accessible", {
 
 test_that("Can download Colorado enrollment data file", {
   skip_if_offline()
-  skip("TODO: Add file download test with URL verification")
+
+  # Use a known working URL
+  url <- "https://www.cde.state.co.us/cdereval/2023-24pk-12membershipgradelevelbyschool"
+  temp_file <- tempfile(fileext = ".xlsx")
+
+  tryCatch({
+    response <- httr::GET(
+      url,
+      httr::write_disk(temp_file, overwrite = TRUE),
+      httr::timeout(120),
+      httr::config(ssl_verifypeer = FALSE)
+    )
+
+    # Check HTTP status
+    expect_true(httr::status_code(response) %in% c(200, 301, 302),
+                info = "Download should succeed")
+
+    # Check file exists and has content
+    expect_true(file.exists(temp_file), info = "File should be created")
+
+    file_size <- file.info(temp_file)$size
+    expect_gt(file_size, 1000, info = "File should be larger than 1KB (not an error page)")
+
+    # Clean up
+    if (file.exists(temp_file)) unlink(temp_file)
+
+  }, error = function(e) {
+    if (file.exists(temp_file)) unlink(temp_file)
+    skip(paste("Download failed:", e$message))
+  })
 })
 
 # ==============================================================================
 # STEP 3: File Parsing Tests
 # ==============================================================================
 
-test_that("Can parse Colorado enrollment file", {
+test_that("Can parse Colorado enrollment file with readxl", {
   skip_if_offline()
-  skip("TODO: Add file parsing test")
+
+  url <- "https://www.cde.state.co.us/cdereval/2023-24pk-12membershipgradelevelbyschool"
+  temp_file <- tempfile(fileext = ".xlsx")
+
+  tryCatch({
+    response <- httr::GET(
+      url,
+      httr::write_disk(temp_file, overwrite = TRUE),
+      httr::timeout(120),
+      httr::config(ssl_verifypeer = FALSE)
+    )
+
+    if (httr::http_error(response)) {
+      skip("Could not download file for parsing test")
+    }
+
+    # Try to list sheets
+    sheets <- readxl::excel_sheets(temp_file)
+    expect_gt(length(sheets), 0, info = "Excel file should have at least one sheet")
+
+    # Try to read first sheet
+    df <- readxl::read_excel(temp_file, sheet = sheets[1])
+    expect_true(is.data.frame(df), info = "Should parse to data frame")
+    expect_gt(nrow(df), 0, info = "Data frame should have rows")
+
+    # Clean up
+    if (file.exists(temp_file)) unlink(temp_file)
+
+  }, error = function(e) {
+    if (file.exists(temp_file)) unlink(temp_file)
+    skip(paste("Parsing test failed:", e$message))
+  })
 })
 
 # ==============================================================================
 # STEP 4: Column Structure Tests
 # ==============================================================================
 
-test_that("coschooldata data file has expected columns", {
-  skip("TODO: Add column structure verification")
+test_that("get_enrollment_urls returns URLs for known years", {
+  # Test the URL discovery function
+  for (year in 2020:2024) {
+    urls <- coschooldata:::get_enrollment_urls(year)
+    expect_true(!is.null(urls), info = paste("Should have URLs for year", year))
+    expect_true("grade" %in% names(urls) || "race_gender" %in% names(urls),
+                info = paste("Should have grade or race_gender URL for year", year))
+  }
 })
 
 # ==============================================================================

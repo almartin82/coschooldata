@@ -30,23 +30,20 @@
 #' @keywords internal
 get_raw_enr <- function(end_year) {
 
-  # Validate year range
-  # Data available from 2009-present via CDE website
-  if (end_year < 2009 || end_year > 2025) {
-    stop("end_year must be between 2009 and 2025")
+  # Validate year range using get_available_years()
+  available <- get_available_years()
+  if (end_year < available$min_year || end_year > available$max_year) {
+    stop(paste0(
+      "end_year must be between ", available$min_year, " and ", available$max_year,
+      ".\nUse get_available_years() for details on data availability."
+    ))
   }
 
   message(paste("Downloading CDE enrollment data for", end_year, "..."))
 
-  # Use appropriate download function based on year
-  # 2019+: Modern format with consistent file naming
-  # 2009-2018: Older format with slightly different structure
-
-  if (end_year >= 2019) {
-    school_data <- download_modern_enrollment(end_year)
-  } else {
-    school_data <- download_legacy_enrollment(end_year)
-  }
+  # Use modern download for all supported years (2020+)
+  # Legacy years (2018-2019) are no longer in the supported range
+  school_data <- download_modern_enrollment(end_year)
 
   # Add end_year column
   school_data$end_year <- end_year
@@ -59,8 +56,8 @@ get_raw_enr <- function(end_year) {
 
 #' Download modern format enrollment data (2019+)
 #'
-#' Downloads enrollment data from CDE's modern Excel files. These files
-#' have consistent column naming and are available at predictable URLs.
+#' Downloads enrollment data from CDE's modern Excel files. Uses URL discovery
+#' to find the correct file locations since CDE uses inconsistent URL patterns.
 #'
 #' @param end_year School year end (2019-2025)
 #' @return Data frame with school-level enrollment data
@@ -69,59 +66,60 @@ download_modern_enrollment <- function(end_year) {
 
   message("  Downloading school-level enrollment data...")
 
-  # Build URL for the combined membership file
-  # CDE uses format like: 2023-24pk-12membershipfrlethnicitygenderschoolflags
-  # or: 2022-23pk-12raceethnicitygenderbygradeschool
+  # Use URL discovery to find correct file locations
+  urls <- get_enrollment_urls(end_year)
 
-  year_str <- format_cde_year(end_year, "dash2")
+  if (is.null(urls)) {
+    stop(paste("Could not find enrollment data URLs for year", end_year,
+               "\nCDE may have changed their website structure.",
+               "\nCheck: https://ed.cde.state.co.us/cdereval/pupilmembership-statistics"))
+  }
 
-  # Try the combined file first (available for recent years)
-  # This file has membership, FRL, race/ethnicity, gender with school flags
-  combined_url <- build_cde_url(end_year, "combined")
-
-  # Also try the grade-level file and race/ethnicity file
-  grade_url <- build_cde_url(end_year, "grade")
-  race_url <- build_cde_url(end_year, "race")
-
-  # Attempt download - try combined first, then fall back to separate files
   school_data <- NULL
 
-  # Try combined file
-  tryCatch({
-    school_data <- download_cde_excel(combined_url)
-    if (!is.null(school_data) && nrow(school_data) > 0) {
-      message("    Using combined membership file")
-      return(school_data)
-    }
-  }, error = function(e) {
-    message("    Combined file not available, trying separate files...")
-  })
+  # Try combined file first if available (most comprehensive)
+  if (!is.null(urls$combined)) {
+    tryCatch({
+      school_data <- download_cde_excel(urls$combined)
+      if (!is.null(school_data) && nrow(school_data) > 0) {
+        message("    Using combined membership file")
+        return(school_data)
+      }
+    }, error = function(e) {
+      message("    Combined file not available, trying separate files...")
+    })
+  }
 
   # Try race/ethnicity file (most comprehensive for demographics)
-  tryCatch({
-    school_data <- download_cde_excel(race_url)
-    if (!is.null(school_data) && nrow(school_data) > 0) {
-      message("    Using race/ethnicity file")
-      return(school_data)
-    }
-  }, error = function(e) {
-    message("    Race/ethnicity file not available, trying grade file...")
-  })
+  if (!is.null(urls$race_gender)) {
+    tryCatch({
+      school_data <- download_cde_excel(urls$race_gender)
+      if (!is.null(school_data) && nrow(school_data) > 0) {
+        message("    Using race/ethnicity file")
+        return(school_data)
+      }
+    }, error = function(e) {
+      message("    Race/ethnicity file not available, trying grade file...")
+    })
+  }
 
   # Try grade-level file
-  tryCatch({
-    school_data <- download_cde_excel(grade_url)
-    if (!is.null(school_data) && nrow(school_data) > 0) {
-      message("    Using grade-level file")
-      return(school_data)
-    }
-  }, error = function(e) {
-    stop(paste("Failed to download enrollment data for year", end_year,
-               "\nTried URLs:", combined_url, race_url, grade_url))
-  })
+  if (!is.null(urls$grade)) {
+    tryCatch({
+      school_data <- download_cde_excel(urls$grade)
+      if (!is.null(school_data) && nrow(school_data) > 0) {
+        message("    Using grade-level file")
+        return(school_data)
+      }
+    }, error = function(e) {
+      # Final failure
+    })
+  }
 
   if (is.null(school_data) || nrow(school_data) == 0) {
-    stop(paste("No data available for year", end_year))
+    tried_urls <- paste(Filter(Negate(is.null), urls), collapse = ", ")
+    stop(paste("Failed to download enrollment data for year", end_year,
+               "\nTried URLs:", tried_urls))
   }
 
   school_data

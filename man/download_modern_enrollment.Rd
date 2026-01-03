@@ -13,7 +13,7 @@ download_modern_enrollment(end_year)
 Data frame with school-level enrollment data
 }
 \description{
-Downloads enrollment data from CDE's modern Excel files. These files
-have consistent column naming and are available at predictable URLs.
+Downloads enrollment data from CDE's modern Excel files. Uses URL discovery
+to find the correct file locations since CDE uses inconsistent URL patterns.
 }
 \keyword{internal}
