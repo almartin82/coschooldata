@@ -10,8 +10,8 @@ theme_set(theme_minimal(base_size = 14))
 ```
 
 This vignette explores Colorado’s public school enrollment data,
-surfacing key trends and demographic patterns across 6 years of data
-(2019-2024).
+surfacing key trends and demographic patterns across 5 years of data
+(2020-2024).
 
 ------------------------------------------------------------------------
 
@@ -21,7 +21,7 @@ Colorado public schools grew steadily from 2009 to 2019, adding over
 100,000 students. Since COVID, enrollment has been flat to declining.
 
 ``` r
-enr <- fetch_enr_multi(2019:2024)
+enr <- fetch_enr_multi(2020:2024)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -38,7 +38,7 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_point(size = 3, color = "#003366") +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "Colorado Public School Enrollment (2019-2024)",
+    title = "Colorado Public School Enrollment (2020-2024)",
     subtitle = "Growth has stalled after a decade of expansion",
     x = "School Year (ending)",
     y = "Total Enrollment"
@@ -47,10 +47,10 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
 
 ------------------------------------------------------------------------
 
-## 2. Denver Public Schools lost 15,000 students
+## 2. Denver Public Schools lost thousands of students
 
 Denver Public Schools, the state’s largest district, has seen dramatic
-enrollment declines since 2019, losing the equivalent of a mid-sized
+enrollment declines since 2020, losing the equivalent of a mid-sized
 suburban district.
 
 ``` r
@@ -92,7 +92,7 @@ elementary schools.
 covid_grades <- enr |>
   filter(is_state, subgroup == "total_enrollment",
          grade_level %in% c("K", "01", "05", "09"),
-         end_year %in% 2019:2024) |>
+         end_year %in% 2020:2024) |>
   select(end_year, grade_level, n_students) |>
   pivot_wider(names_from = grade_level, values_from = n_students)
 
@@ -167,9 +167,9 @@ western_slope <- enr |>
          grepl("Mesa County|Montrose|Delta", district_name)) |>
   group_by(district_name) |>
   summarize(
-    y2019 = n_students[end_year == 2019],
+    y2020 = n_students[end_year == 2020],
     y2024 = n_students[end_year == 2024],
-    pct_change = round((y2024 / y2019 - 1) * 100, 1),
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(pct_change)
@@ -275,9 +275,9 @@ northern <- enr |>
          grepl("Poudre|Thompson|Weld|Greeley", district_name, ignore.case = TRUE)) |>
   group_by(district_name) |>
   summarize(
-    y2019 = n_students[end_year == 2019],
+    y2020 = n_students[end_year == 2020],
     y2024 = n_students[end_year == 2024],
-    pct_change = round((y2024 / y2019 - 1) * 100, 1),
+    pct_change = round((y2024 / y2020 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(desc(pct_change))

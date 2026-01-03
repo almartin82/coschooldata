@@ -1,6 +1,7 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https://almartin82.github.io/coschooldata/404.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/CLAUDE.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/EXPANSION.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/LICENSE-text.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/LICENSE.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/TODO.html</loc></url>
@@ -28,12 +29,17 @@
 <url><loc>https://almartin82.github.io/coschooldata/reference/get_cache_path.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/get_cde_column_map.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/get_cde_url_patterns.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/get_enrollment_urls.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/get_known_enrollment_urls.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/get_raw_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/index.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/parse_school_year.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/read_cache.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/scrape_available_years.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/scrape_enrollment_urls.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/standardize_district_code.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/standardize_school_code.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/verify_excel_url.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/write_cache.html</loc></url>
 </urlset>
 

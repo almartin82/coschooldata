@@ -15,27 +15,9 @@ format for analysis.
 
   Fetch enrollment data for multiple years
 
-- `tidy_enr`:
+- [`get_available_years`](https://almartin82.github.io/coschooldata/reference/get_available_years.md):
 
-  Transform wide data to tidy (long) format
-
-- `id_enr_aggs`:
-
-  Add aggregation level flags
-
-- `enr_grade_aggs`:
-
-  Create grade-level aggregations
-
-## Cache functions
-
-- [`cache_status`](https://almartin82.github.io/coschooldata/reference/cache_status.md):
-
-  View cached data files
-
-- [`clear_cache`](https://almartin82.github.io/coschooldata/reference/clear_cache.md):
-
-  Remove cached data files
+  Get available year range for data
 
 ## ID System
 
@@ -51,17 +33,15 @@ Data is sourced from the Colorado Department of Education:
 
 - Pupil Membership: <https://www.cde.state.co.us/cdereval/pupilcurrent>
 
-- Data Pipeline: <https://www.cde.state.co.us/datapipeline>
+- Data Archive:
+  <https://ed.cde.state.co.us/cdereval/pupilmembership-statistics>
 
 ## Data Availability
 
-The package supports three format eras:
-
-- 2009-2018: Excel files with older column format
-
-- 2019-2023: Excel files with modern column naming
-
-- 2024+: Current format with enhanced school flags
+The package currently supports years 2020-2025. Data comes from the
+Student October Count collection published by CDE. Use
+[`get_available_years()`](https://almartin82.github.io/coschooldata/reference/get_available_years.md)
+to check the current available range.
 
 ## See also
 
