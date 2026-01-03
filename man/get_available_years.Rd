@@ -8,13 +8,14 @@ get_available_years()
 }
 \value{
 A list with three elements:
-\item{min_year}{The earliest available school year end (e.g., 2009 for 2008-09)}
+\item{min_year}{The earliest available school year end (e.g., 2020 for 2019-20)}
 \item{max_year}{The latest available school year end (e.g., 2025 for 2024-25)}
 \item{description}{Human-readable description of data availability}
 }
 \description{
 Returns the range of school years for which enrollment data is available
-from the Colorado Department of Education.
+from the Colorado Department of Education. Uses URL discovery to determine
+which years have working data files.
 }
 \examples{
 get_available_years()

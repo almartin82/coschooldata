@@ -15,17 +15,7 @@ Count collection and transforming it into tidy format for analysis.
 \describe{
 \item{\code{\link{fetch_enr}}}{Fetch enrollment data for a school year}
 \item{\code{\link{fetch_enr_multi}}}{Fetch enrollment data for multiple years}
-\item{\code{\link{tidy_enr}}}{Transform wide data to tidy (long) format}
-\item{\code{\link{id_enr_aggs}}}{Add aggregation level flags}
-\item{\code{\link{enr_grade_aggs}}}{Create grade-level aggregations}
-}
-}
-
-\section{Cache functions}{
-
-\describe{
-\item{\code{\link{cache_status}}}{View cached data files}
-\item{\code{\link{clear_cache}}}{Remove cached data files}
+\item{\code{\link{get_available_years}}}{Get available year range for data}
 }
 }
 
@@ -43,18 +33,15 @@ Colorado uses a hierarchical ID system:
 Data is sourced from the Colorado Department of Education:
 \itemize{
 \item Pupil Membership: \url{https://www.cde.state.co.us/cdereval/pupilcurrent}
-\item Data Pipeline: \url{https://www.cde.state.co.us/datapipeline}
+\item Data Archive: \url{https://ed.cde.state.co.us/cdereval/pupilmembership-statistics}
 }
 }
 
 \section{Data Availability}{
 
-The package supports three format eras:
-\itemize{
-\item 2009-2018: Excel files with older column format
-\item 2019-2023: Excel files with modern column naming
-\item 2024+: Current format with enhanced school flags
-}
+The package currently supports years 2020-2025. Data comes from the Student
+October Count collection published by CDE. Use \code{get_available_years()}
+to check the current available range.
 }
 
 \seealso{
