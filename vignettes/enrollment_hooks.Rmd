@@ -34,7 +34,7 @@ library(ggplot2)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 7 years of data (2019-2025).
+This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 6 years of data (2019-2024).
 
 ---
 
@@ -43,7 +43,7 @@ This vignette explores Colorado's public school enrollment data, surfacing key t
 Colorado public schools grew steadily from 2009 to 2019, adding over 100,000 students. Since COVID, enrollment has been flat to declining.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(2019:2025)
+enr <- fetch_enr_multi(2019:2024)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -60,7 +60,7 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_point(size = 3, color = "#003366") +
   scale_y_continuous(labels = scales::comma) +
   labs(
-    title = "Colorado Public School Enrollment (2019-2025)",
+    title = "Colorado Public School Enrollment (2019-2024)",
     subtitle = "Growth has stalled after a decade of expansion",
     x = "School Year (ending)",
     y = "Total Enrollment"
@@ -110,7 +110,7 @@ Colorado kindergarten enrollment dropped 15% during COVID and hasn't fully recov
 covid_grades <- enr |>
   filter(is_state, subgroup == "total_enrollment",
          grade_level %in% c("K", "01", "05", "09"),
-         end_year %in% 2019:2025) |>
+         end_year %in% 2019:2024) |>
   select(end_year, grade_level, n_students) |>
   pivot_wider(names_from = grade_level, values_from = n_students)
 
@@ -124,9 +124,9 @@ covid_grades
 Colorado's Hispanic student population has grown from under 30% to over 34% since 2009, making it the largest single demographic group in many districts.
 
 ```{r demographics}
-enr_2025 <- fetch_enr(2025)
+enr_2024 <- fetch_enr(2024)
 
-demographics <- enr_2025 |>
+demographics <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("hispanic", "white", "black", "asian", "native_american", "multiracial")) |>
   mutate(pct = round(pct * 100, 1)) |>
@@ -145,7 +145,7 @@ demographics |>
   scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.15))) +
   scale_fill_brewer(palette = "Set2") +
   labs(
-    title = "Colorado Student Demographics (2025)",
+    title = "Colorado Student Demographics (2024)",
     subtitle = "Hispanic students are over a third of enrollment",
     x = "Number of Students",
     y = NULL
@@ -181,8 +181,8 @@ western_slope <- enr |>
   group_by(district_name) |>
   summarize(
     y2019 = n_students[end_year == 2019],
-    y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2019 - 1) * 100, 1),
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2019 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(pct_change)
@@ -214,11 +214,11 @@ enr |>
 Colorado's charter sector has grown substantially, now serving about 15% of all public school students statewide.
 
 ```{r charters}
-state_total <- enr_2025 |>
+state_total <- enr_2024 |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   pull(n_students)
 
-charter_total <- enr_2025 |>
+charter_total <- enr_2024 |>
   filter(is_charter, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   summarize(charter_total = sum(n_students, na.rm = TRUE)) |>
   pull(charter_total)
@@ -237,7 +237,7 @@ tibble(
 Aurora Public Schools has no racial majority--it's a "majority-minority" district with significant Hispanic, Black, Asian, and white populations.
 
 ```{r aurora}
-aurora <- enr_2025 |>
+aurora <- enr_2024 |>
   filter(is_district, grade_level == "TOTAL",
          grepl("Aurora", district_name),
          subgroup %in% c("hispanic", "white", "black", "asian", "multiracial")) |>
@@ -284,8 +284,8 @@ northern <- enr |>
   group_by(district_name) |>
   summarize(
     y2019 = n_students[end_year == 2019],
-    y2025 = n_students[end_year == 2025],
-    pct_change = round((y2025 / y2019 - 1) * 100, 1),
+    y2024 = n_students[end_year == 2024],
+    pct_change = round((y2024 / y2019 - 1) * 100, 1),
     .groups = "drop"
   ) |>
   arrange(desc(pct_change))
