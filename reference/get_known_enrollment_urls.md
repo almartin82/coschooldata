@@ -18,3 +18,9 @@ get_known_enrollment_urls(end_year)
 ## Value
 
 Named list with URLs, or NULL if year not in lookup
+
+## Details
+
+NOTE: As of January 2026, www.cde.state.co.us is DOWN. The new site
+ed.cde.state.co.us hosts pages but files still point to the old domain.
+This function tries both domains.
