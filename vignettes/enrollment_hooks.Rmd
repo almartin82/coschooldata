@@ -8,13 +8,18 @@ vignette: >
 ---
 
 ```{r setup, include=FALSE}
-# Check if we can actually fetch enrollment data
-# The CDE data server (www.cde.state.co.us) is separate from the info pages
-# and may be down even when the main site is up
-can_fetch <- tryCatch({
-  # Try to fetch actual data for the most recent year
-  test_data <- coschooldata::fetch_enr(2024, tidy = FALSE)
-  !is.null(test_data) && nrow(test_data$school) > 0
+# Check if we're in a context where we should run live data fetches
+NOT_CRAN <- identical(tolower(Sys.getenv("NOT_CRAN")), "true")
+
+# Also check if we can actually fetch enrollment data
+# The CDE data server (www.cde.state.co.us) may be down even when NOT_CRAN=true
+can_fetch <- NOT_CRAN && tryCatch({
+  # Quick connectivity check - try HEAD request first
+  response <- httr::HEAD(
+    "https://www.cde.state.co.us/cdereval/pupilmembership-statistics",
+    httr::timeout(10)
+  )
+  !httr::http_error(response)
 }, error = function(e) FALSE)
 
 knitr::opts_chunk$set(
