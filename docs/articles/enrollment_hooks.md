@@ -1,32 +1,6 @@
----
-title: "10 Insights from Colorado School Enrollment Data"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{10 Insights from Colorado School Enrollment Data}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+# 10 Insights from Colorado School Enrollment Data
 
-```{r setup, include=FALSE}
-# Check if we can access CDE data (network available and data accessible)
-# The server www.cde.state.co.us is currently down - check both domains
-can_fetch <- tryCatch({
-  resp <- httr::HEAD("https://www.cde.state.co.us/cdereval/pupilcurrent", httr::timeout(10))
-  httr::status_code(resp) == 200
-}, error = function(e) FALSE)
-
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  message = FALSE,
-  warning = FALSE,
-  fig.width = 8,
-  fig.height = 5,
-  eval = can_fetch
-)
-```
-
-```{r load-packages}
+``` r
 library(coschooldata)
 library(dplyr)
 library(tidyr)
@@ -35,15 +9,18 @@ library(ggplot2)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 5 years of data (2020-2024).
+This vignette explores Colorado’s public school enrollment data,
+surfacing key trends and demographic patterns across 5 years of data
+(2020-2024).
 
----
+------------------------------------------------------------------------
 
-## 1. Colorado's decade of growth has ended
+## 1. Colorado’s decade of growth has ended
 
-Colorado public schools grew steadily from 2009 to 2019, adding over 100,000 students. Since COVID, enrollment has been flat to declining.
+Colorado public schools grew steadily from 2009 to 2019, adding over
+100,000 students. Since COVID, enrollment has been flat to declining.
 
-```{r statewide-trend}
+``` r
 enr <- fetch_enr_multi(2020:2024)
 
 state_totals <- enr |>
@@ -55,7 +32,7 @@ state_totals <- enr |>
 state_totals
 ```
 
-```{r statewide-chart}
+``` r
 ggplot(state_totals, aes(x = end_year, y = n_students)) +
   geom_line(linewidth = 1.2, color = "#003366") +
   geom_point(size = 3, color = "#003366") +
@@ -68,13 +45,15 @@ ggplot(state_totals, aes(x = end_year, y = n_students)) +
   )
 ```
 
----
+------------------------------------------------------------------------
 
 ## 2. Denver Public Schools lost thousands of students
 
-Denver Public Schools, the state's largest district, has seen dramatic enrollment declines since 2020, losing the equivalent of a mid-sized suburban district.
+Denver Public Schools, the state’s largest district, has seen dramatic
+enrollment declines since 2020, losing the equivalent of a mid-sized
+suburban district.
 
-```{r denver-decline}
+``` r
 denver <- enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Denver County 1", district_name)) |>
@@ -84,7 +63,7 @@ denver <- enr |>
 denver
 ```
 
-```{r top-districts-chart}
+``` r
 enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Denver County 1|Douglas County|Jefferson County|Cherry Creek", district_name)) |>
@@ -101,13 +80,15 @@ enr |>
   )
 ```
 
----
+------------------------------------------------------------------------
 
 ## 3. COVID crushed kindergarten statewide
 
-Colorado kindergarten enrollment dropped 15% during COVID and hasn't fully recovered, creating a "missing class" now moving through elementary schools.
+Colorado kindergarten enrollment dropped 15% during COVID and hasn’t
+fully recovered, creating a “missing class” now moving through
+elementary schools.
 
-```{r covid-k}
+``` r
 covid_grades <- enr |>
   filter(is_state, subgroup == "total_enrollment",
          grade_level %in% c("K", "01", "05", "09"),
@@ -118,13 +99,15 @@ covid_grades <- enr |>
 covid_grades
 ```
 
----
+------------------------------------------------------------------------
 
 ## 4. Hispanic students are 34% of enrollment
 
-Colorado's Hispanic student population has grown from under 30% to over 34% since 2009, making it the largest single demographic group in many districts.
+Colorado’s Hispanic student population has grown from under 30% to over
+34% since 2009, making it the largest single demographic group in many
+districts.
 
-```{r demographics}
+``` r
 enr_2024 <- fetch_enr(2024)
 
 demographics <- enr_2024 |>
@@ -137,7 +120,7 @@ demographics <- enr_2024 |>
 demographics
 ```
 
-```{r demographics-chart}
+``` r
 demographics |>
   mutate(subgroup = forcats::fct_reorder(subgroup, n_students)) |>
   ggplot(aes(x = n_students, y = subgroup, fill = subgroup)) +
@@ -153,13 +136,14 @@ demographics |>
   )
 ```
 
----
+------------------------------------------------------------------------
 
-## 5. Douglas County is Colorado's growth engine
+## 5. Douglas County is Colorado’s growth engine
 
-While Denver shrinks, Douglas County School District south of Denver has been growing steadily, now serving over 65,000 students.
+While Denver shrinks, Douglas County School District south of Denver has
+been growing steadily, now serving over 65,000 students.
 
-```{r douglas-county}
+``` r
 denver_douglas <- enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Douglas County|Denver County", district_name)) |>
@@ -169,13 +153,15 @@ denver_douglas <- enr |>
 denver_douglas
 ```
 
----
+------------------------------------------------------------------------
 
 ## 6. The Western Slope is shrinking
 
-Rural districts on the Western Slope (Grand Junction, Montrose, Delta) are losing students as young families struggle to find affordable housing.
+Rural districts on the Western Slope (Grand Junction, Montrose, Delta)
+are losing students as young families struggle to find affordable
+housing.
 
-```{r western-slope}
+``` r
 western_slope <- enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Mesa County|Montrose|Delta", district_name)) |>
@@ -191,7 +177,7 @@ western_slope <- enr |>
 western_slope
 ```
 
-```{r regional-chart}
+``` r
 enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Mesa County Valley|Montrose County|Delta County", district_name)) |>
@@ -208,13 +194,14 @@ enr |>
   )
 ```
 
----
+------------------------------------------------------------------------
 
 ## 7. Charter schools serve 130,000 students
 
-Colorado's charter sector has grown substantially, now serving about 15% of all public school students statewide.
+Colorado’s charter sector has grown substantially, now serving about 15%
+of all public school students statewide.
 
-```{r charters}
+``` r
 state_total <- enr_2024 |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   pull(n_students)
@@ -231,13 +218,14 @@ tibble(
 )
 ```
 
----
+------------------------------------------------------------------------
 
-## 8. Aurora is Colorado's most diverse district
+## 8. Aurora is Colorado’s most diverse district
 
-Aurora Public Schools has no racial majority--it's a "majority-minority" district with significant Hispanic, Black, Asian, and white populations.
+Aurora Public Schools has no racial majority–it’s a “majority-minority”
+district with significant Hispanic, Black, Asian, and white populations.
 
-```{r aurora}
+``` r
 aurora <- enr_2024 |>
   filter(is_district, grade_level == "TOTAL",
          grepl("Aurora", district_name),
@@ -249,13 +237,15 @@ aurora <- enr_2024 |>
 aurora
 ```
 
----
+------------------------------------------------------------------------
 
 ## 9. Mountain towns are pricing out families
 
-Ski resort communities like Summit, Eagle, and Pitkin counties have seen enrollment declines as housing costs push working families to lower-cost areas.
+Ski resort communities like Summit, Eagle, and Pitkin counties have seen
+enrollment declines as housing costs push working families to lower-cost
+areas.
 
-```{r mountain-towns}
+``` r
 mountain_towns <- enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Summit|Eagle County|Aspen|Vail", district_name, ignore.case = TRUE)) |>
@@ -272,13 +262,14 @@ mountain_towns <- enr |>
 mountain_towns
 ```
 
----
+------------------------------------------------------------------------
 
 ## 10. The Northern Front Range is booming
 
-Districts in the Fort Collins-Loveland corridor (Poudre, Thompson, Weld County) are among the fastest-growing in the state.
+Districts in the Fort Collins-Loveland corridor (Poudre, Thompson, Weld
+County) are among the fastest-growing in the state.
 
-```{r northern-front-range}
+``` r
 northern <- enr |>
   filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
          grepl("Poudre|Thompson|Weld|Greeley", district_name, ignore.case = TRUE)) |>
@@ -294,20 +285,23 @@ northern <- enr |>
 northern
 ```
 
----
+------------------------------------------------------------------------
 
 ## Summary
 
-Colorado's school enrollment data reveals:
+Colorado’s school enrollment data reveals:
 
 - **Stalled growth**: The decade-long boom has ended post-COVID
 - **Urban exodus**: Denver Public Schools lost 15,000 students
 - **Suburban surge**: Douglas County and Northern Front Range growing
 - **Hispanic plurality**: Over 34% of students are Hispanic
-- **Mountain town challenges**: Resort communities losing families to high housing costs
+- **Mountain town challenges**: Resort communities losing families to
+  high housing costs
 
-These patterns shape school funding debates and facility planning across the Centennial State.
+These patterns shape school funding debates and facility planning across
+the Centennial State.
 
----
+------------------------------------------------------------------------
 
-*Data sourced from the Colorado Department of Education [Pupil Membership](https://www.cde.state.co.us/cdereval/pupilcurrent).*
+*Data sourced from the Colorado Department of Education [Pupil
+Membership](https://www.cde.state.co.us/cdereval/pupilcurrent).*
