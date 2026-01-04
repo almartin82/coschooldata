@@ -57,26 +57,8 @@ Count collection and transforming it into tidy format for analysis.</p>
 <dt><code><a href="fetch_enr_multi.html">fetch_enr_multi</a></code></dt>
 <dd><p>Fetch enrollment data for multiple years</p></dd>
 
-<dt><code>tidy_enr</code></dt>
-<dd><p>Transform wide data to tidy (long) format</p></dd>
-
-<dt><code>id_enr_aggs</code></dt>
-<dd><p>Add aggregation level flags</p></dd>
-
-<dt><code>enr_grade_aggs</code></dt>
-<dd><p>Create grade-level aggregations</p></dd>
-
-
-</dl></div>
-    <div class="section level2">
-    <h2 id="cache-functions">Cache functions<a class="anchor" aria-label="anchor" href="#cache-functions"></a></h2>
-
-
-<dl><dt><code><a href="cache_status.html">cache_status</a></code></dt>
-<dd><p>View cached data files</p></dd>
-
-<dt><code><a href="clear_cache.html">clear_cache</a></code></dt>
-<dd><p>Remove cached data files</p></dd>
+<dt><code><a href="get_available_years.html">get_available_years</a></code></dt>
+<dd><p>Get available year range for data</p></dd>
 
 
 </dl></div>
@@ -92,16 +74,16 @@ Count collection and transforming it into tidy format for analysis.</p>
 
 
 <p>Data is sourced from the Colorado Department of Education:</p><ul><li><p>Pupil Membership: <a href="https://www.cde.state.co.us/cdereval/pupilcurrent" class="external-link">https://www.cde.state.co.us/cdereval/pupilcurrent</a></p></li>
-<li><p>Data Pipeline: <a href="https://www.cde.state.co.us/datapipeline" class="external-link">https://www.cde.state.co.us/datapipeline</a></p></li>
+<li><p>Data Archive: <a href="https://ed.cde.state.co.us/cdereval/pupilmembership-statistics" class="external-link">https://ed.cde.state.co.us/cdereval/pupilmembership-statistics</a></p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="data-availability">Data Availability<a class="anchor" aria-label="anchor" href="#data-availability"></a></h2>
 
 
-<p>The package supports three format eras:</p><ul><li><p>2009-2018: Excel files with older column format</p></li>
-<li><p>2019-2023: Excel files with modern column naming</p></li>
-<li><p>2024+: Current format with enhanced school flags</p></li>
-</ul></div>
+<p>The package currently supports years 2020-2025. Data comes from the Student
+October Count collection published by CDE. Use <code><a href="get_available_years.html">get_available_years()</a></code>
+to check the current available range.</p>
+    </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Useful links:</p><ul><li><p><a href="https://almartin82.github.io/coschooldata">https://almartin82.github.io/coschooldata</a></p></li>
