@@ -2,6 +2,8 @@
 
 export(cache_status)
 export(clear_cache)
+export(clear_directory_cache)
+export(fetch_directory)
 export(fetch_enr)
 export(fetch_enr_multi)
 export(get_available_years)
