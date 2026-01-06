@@ -5,6 +5,15 @@
 #' @importFrom rlang .data
 NULL
 
+# Declare global variables for NSE (dplyr/tidyr)
+utils::globalVariables(
+  c("end_year", "district_id", "campus_id", "grade_level", "subgroup",
+    "district_name", "campus_name", "n_students", "pct", "is_charter",
+    "is_state", "is_district", "is_campus", "race_ethnicity", "gender",
+    "economically_disadvantaged", "english_learner", "male", "female",
+    "aggregation_flag")
+)
+
 
 #' Get available years for Colorado enrollment data
 #'
