@@ -31,3 +31,8 @@ reference:
   contents:
   - cache_status
   - starts_with("clear")
+
+- title: Process Data
+  contents:
+  - tidy_enr
+  - process_enr
