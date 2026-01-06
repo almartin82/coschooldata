@@ -40,6 +40,7 @@
 <url><loc>https://almartin82.github.io/coschooldata/reference/parse_school_year.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/process_directory.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/process_district_addresses.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/process_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/process_school_addresses.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/read_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/read_cache_directory.html</loc></url>
@@ -47,6 +48,7 @@
 <url><loc>https://almartin82.github.io/coschooldata/reference/scrape_enrollment_urls.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/standardize_district_code.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/standardize_school_code.html</loc></url>
+<url><loc>https://almartin82.github.io/coschooldata/reference/tidy_enr.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/verify_excel_url.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/write_cache.html</loc></url>
 <url><loc>https://almartin82.github.io/coschooldata/reference/write_cache_directory.html</loc></url>

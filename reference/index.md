@@ -19,3 +19,10 @@
   : Clear the coschooldata cache
 - [`clear_directory_cache()`](https://almartin82.github.io/coschooldata/reference/clear_directory_cache.md)
   : Clear school directory cache
+
+## Process Data
+
+- [`tidy_enr()`](https://almartin82.github.io/coschooldata/reference/tidy_enr.md)
+  : Tidy enrollment data
+- [`process_enr()`](https://almartin82.github.io/coschooldata/reference/process_enr.md)
+  : Process raw enrollment data to wide format
