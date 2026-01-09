@@ -347,7 +347,7 @@
 <span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a>State added 68,000 students from 2002 to 2026, bucking national trends.</span>
 <span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a></span>
 <span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">library</span>(idschooldata)</span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a><span class="fu">library</span>(coschooldata)</span>
 <span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a></span>
 <span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>enr <span class="ot">&lt;-</span> <span class="fu">fetch_enr_multi</span>(<span class="dv">2002</span><span class="sc">:</span><span class="dv">2026</span>)</span>
@@ -359,7 +359,7 @@
 <span id="cb9-15"><a href="#cb9-15" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">change =</span> n_students <span class="sc">-</span> <span class="fu">lag</span>(n_students),</span>
 <span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>         <span class="at">pct_change =</span> <span class="fu">round</span>((n_students <span class="sc">/</span> <span class="fu">lag</span>(n_students) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> <span class="dv">100</span>, <span class="dv">1</span>))</span>
 <span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a><span class="co"># Prints: 2002=XXX, 2026=YYY, change=ZZZ, pct=PP.P%</span></span></code></pre></div>
-<p><img src="https://almartin82.github.io/idschooldata/articles/..." alt="Chart"> ```</p>
+<p><img src="https://almartin82.github.io/coschooldata/articles/..." alt="Chart"> ```</p>
 </div>
 </div>
 </div>

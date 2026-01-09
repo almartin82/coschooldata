@@ -331,7 +331,7 @@ claim accuracy
 State added 68,000 students from 2002 to 2026, bucking national trends.
 
 ```r
-library(idschooldata)
+library(coschooldata)
 library(dplyr)
 
 enr <- fetch_enr_multi(2002:2026)
@@ -345,4 +345,4 @@ enr %>%
 # Prints: 2002=XXX, 2026=YYY, change=ZZZ, pct=PP.P%
 ```
 
-![Chart](https://almartin82.github.io/idschooldata/articles/...) \`\`\`
+![Chart](https://almartin82.github.io/coschooldata/articles/...) \`\`\`
