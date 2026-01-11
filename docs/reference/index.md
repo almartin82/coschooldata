@@ -6,6 +6,8 @@
   : Fetch Colorado enrollment data
 - [`fetch_enr_multi()`](https://almartin82.github.io/coschooldata/reference/fetch_enr_multi.md)
   : Fetch enrollment data for multiple years
+- [`fetch_directory()`](https://almartin82.github.io/coschooldata/reference/fetch_directory.md)
+  : Fetch Colorado school directory data
 - [`get_available_years()`](https://almartin82.github.io/coschooldata/reference/get_available_years.md)
   : Get available years for Colorado enrollment data
 
@@ -15,6 +17,8 @@
   : Show cache status
 - [`clear_cache()`](https://almartin82.github.io/coschooldata/reference/clear_cache.md)
   : Clear the coschooldata cache
+- [`clear_directory_cache()`](https://almartin82.github.io/coschooldata/reference/clear_directory_cache.md)
+  : Clear school directory cache
 
 ## Process Data
 

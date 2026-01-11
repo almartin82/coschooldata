@@ -21,7 +21,7 @@ Colorado public schools grew steadily from 2009 to 2019, adding over
 100,000 students. Since COVID, enrollment has been flat to declining.
 
 ``` r
-enr <- fetch_enr_multi(2020:2024)
+enr <- fetch_enr_multi(2020:2024, use_cache = TRUE)
 
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
@@ -108,7 +108,7 @@ Colorado’s Hispanic student population has grown from under 30% to over
 districts.
 
 ``` r
-enr_2024 <- fetch_enr(2024)
+enr_2024 <- fetch_enr(2024, use_cache = TRUE)
 
 demographics <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",

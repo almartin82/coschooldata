@@ -29,7 +29,8 @@ knitr::opts_chunk$set(
   warning = FALSE,
   fig.width = 8,
   fig.height = 5,
-  eval = can_fetch
+  eval = can_fetch,
+  cache = TRUE
 )
 ```
 
