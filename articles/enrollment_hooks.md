@@ -305,3 +305,11 @@ the Centennial State.
 
 *Data sourced from the Colorado Department of Education [Pupil
 Membership](https://www.cde.state.co.us/cdereval/pupilcurrent).*
+
+------------------------------------------------------------------------
+
+## Session Info
+
+``` r
+sessionInfo()
+```
