@@ -8,8 +8,6 @@ src/*.dll
 /doc/
 /docs/
 /Meta/
-vignettes/*_cache/
-vignettes/*_files/
 *.Rcheck/
 __pycache__/
 */__pycache__/
