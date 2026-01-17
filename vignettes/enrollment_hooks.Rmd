@@ -319,3 +319,11 @@ These patterns shape school funding debates and facility planning across the Cen
 ---
 
 *Data sourced from the Colorado Department of Education [Pupil Membership](https://www.cde.state.co.us/cdereval/pupilcurrent).*
+
+---
+
+## Session Info
+
+```{r session-info}
+sessionInfo()
+```
