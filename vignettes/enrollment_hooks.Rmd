@@ -1,8 +1,8 @@
 ---
-title: "10 Insights from Colorado School Enrollment Data"
+title: "15 Insights from Colorado School Enrollment Data"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{10 Insights from Colorado School Enrollment Data}
+  %\VignetteIndexEntry{15 Insights from Colorado School Enrollment Data}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -43,7 +43,7 @@ library(ggplot2)
 theme_set(theme_minimal(base_size = 14))
 ```
 
-This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 5 years of data (2020-2024).
+This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns across 5 years of data (2020-2024). Colorado is part of the [state schooldata project](https://github.com/almartin82/njschooldata), a family of R packages providing consistent access to school enrollment data from all 50 states.
 
 ---
 
@@ -304,15 +304,182 @@ northern
 
 ---
 
+## 11. Colorado has slightly more boys than girls in school
+
+Like most states, Colorado has a small gender imbalance with about 51% male students and 49% female students across all grades.
+
+```{r gender-balance}
+gender <- enr_2024 |>
+  filter(is_state, grade_level == "TOTAL",
+         subgroup %in% c("male", "female")) |>
+  mutate(pct = round(pct * 100, 1)) |>
+  select(subgroup, n_students, pct)
+
+gender
+```
+
+```{r gender-chart}
+gender |>
+  mutate(subgroup = factor(subgroup, levels = c("female", "male"))) |>
+  ggplot(aes(x = subgroup, y = n_students, fill = subgroup)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = paste0(scales::comma(n_students), "\n(", pct, "%)")),
+            vjust = -0.2, size = 4) +
+  scale_y_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.15))) +
+  scale_fill_manual(values = c("female" = "#E91E63", "male" = "#2196F3")) +
+  labs(
+    title = "Colorado Student Gender Distribution (2024)",
+    subtitle = "Slight male majority across all grades",
+    x = NULL,
+    y = "Number of Students"
+  )
+```
+
+---
+
+## 12. High school enrollment is remarkably stable
+
+While elementary grades show COVID disruption, high school grades 9-12 have remained steady, suggesting families prioritize keeping older students enrolled.
+
+```{r high-school}
+high_school <- enr |>
+  filter(is_state, subgroup == "total_enrollment",
+         grade_level %in% c("09", "10", "11", "12")) |>
+  group_by(end_year) |>
+  summarize(hs_total = sum(n_students, na.rm = TRUE), .groups = "drop") |>
+  mutate(change = hs_total - lag(hs_total),
+         pct_change = round(change / lag(hs_total) * 100, 2))
+
+high_school
+```
+
+```{r high-school-chart}
+ggplot(high_school, aes(x = end_year, y = hs_total)) +
+  geom_line(linewidth = 1.2, color = "#4CAF50") +
+  geom_point(size = 3, color = "#4CAF50") +
+  scale_y_continuous(labels = scales::comma, limits = c(0, NA)) +
+  labs(
+    title = "Colorado High School Enrollment (Grades 9-12)",
+    subtitle = "Stable enrollment despite COVID disruptions in elementary",
+    x = "School Year",
+    y = "Total Students"
+  )
+```
+
+---
+
+## 13. Jefferson County is shrinking faster than Denver
+
+Jefferson County (Jeffco), the state's second-largest district, is losing students at a rate comparable to Denver, signaling broader suburban challenges.
+
+```{r jeffco}
+jeffco <- enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Jefferson County", district_name)) |>
+  select(end_year, district_name, n_students) |>
+  mutate(change = n_students - lag(n_students),
+         pct_change = round(change / lag(n_students) * 100, 2))
+
+jeffco
+```
+
+```{r jeffco-chart}
+enr |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL",
+         grepl("Jefferson County|Denver County|Douglas County", district_name)) |>
+  ggplot(aes(x = end_year, y = n_students, color = district_name)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 2) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Front Range Giants: Enrollment Trends",
+    subtitle = "Jeffco and Denver declining, Douglas growing",
+    x = "School Year",
+    y = "Enrollment",
+    color = "District"
+  )
+```
+
+---
+
+## 14. Pre-K enrollment never recovered from COVID
+
+Colorado's Pre-K programs saw the steepest COVID drop and have not returned to pre-pandemic levels, affecting kindergarten readiness statewide.
+
+```{r pre-k}
+prek <- enr |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "PK") |>
+  select(end_year, n_students) |>
+  mutate(change = n_students - lag(n_students),
+         pct_change = round(change / lag(n_students) * 100, 2))
+
+prek
+```
+
+```{r prek-chart}
+ggplot(prek, aes(x = end_year, y = n_students)) +
+  geom_line(linewidth = 1.2, color = "#FF9800") +
+  geom_point(size = 3, color = "#FF9800") +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Colorado Pre-K Enrollment",
+    subtitle = "Never recovered to pre-pandemic levels",
+    x = "School Year",
+    y = "Pre-K Students"
+  )
+```
+
+---
+
+## 15. Top 10 districts serve half of Colorado students
+
+Just 10 districts out of 178 serve over 50% of all Colorado public school students, showing extreme concentration of enrollment.
+
+```{r top-10-districts}
+district_totals <- enr_2024 |>
+  filter(is_district, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  arrange(desc(n_students)) |>
+  head(10) |>
+  select(district_name, n_students)
+
+state_total <- enr_2024 |>
+  filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
+  pull(n_students)
+
+top_10_pct <- round(sum(district_totals$n_students) / state_total * 100, 1)
+
+district_totals |>
+  mutate(pct_of_state = round(n_students / state_total * 100, 1))
+```
+
+```{r top-10-chart}
+district_totals |>
+  mutate(district_name = forcats::fct_reorder(district_name, n_students)) |>
+  ggplot(aes(x = n_students, y = district_name)) +
+  geom_col(fill = "#673AB7") +
+  geom_text(aes(label = scales::comma(n_students)), hjust = -0.1, size = 3.5) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Colorado's 10 Largest School Districts (2024)",
+    subtitle = paste0("These districts serve ", top_10_pct, "% of all students"),
+    x = "Total Enrollment",
+    y = NULL
+  )
+```
+
+---
+
 ## Summary
 
 Colorado's school enrollment data reveals:
 
 - **Stalled growth**: The decade-long boom has ended post-COVID
-- **Urban exodus**: Denver Public Schools lost 15,000 students
+- **Urban decline**: Denver and Jefferson County losing students rapidly
 - **Suburban surge**: Douglas County and Northern Front Range growing
 - **Hispanic plurality**: Over 34% of students are Hispanic
 - **Mountain town challenges**: Resort communities losing families to high housing costs
+- **Pre-K gap**: Early childhood enrollment never recovered from COVID
+- **Concentrated enrollment**: Top 10 districts serve over half the state
 
 These patterns shape school funding debates and facility planning across the Centennial State.
 
