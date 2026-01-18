@@ -1,4 +1,15 @@
+^data-raw$
 ^doc$
 ^Meta$
-^py.*schooldata$
+^pycoschooldata$
 ^vignettes/.*_cache$
+^\.github$
+^_pkgdown\.yml$
+^docs$
+^CLAUDE\.md$
+^EXPANSION\.md$
+^TODO\.md$
+^GRADUATION-RESEARCH\.md$
+^LICENSE\.md$
+^README\.Rmd$
+^vignettes/enrollment_hooks\.R$
