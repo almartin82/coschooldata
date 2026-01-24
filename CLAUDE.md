@@ -4,7 +4,9 @@
 
 ---
 
-# coschooldata Package - Colorado School Enrollment Data
+# coschooldata Package - Colorado School Data
+
+This package provides access to Colorado school enrollment and assessment data from the Colorado Department of Education (CDE).
 
 ## Current Status: SERVER DOWN (as of January 2026)
 
@@ -55,16 +57,18 @@ All data file URLs point to `www.cde.state.co.us` which is DOWN:
 
 ## Impact
 
-- **Package cannot download enrollment data** - all Excel files are on the DOWN server
-- **`fetch_enr()` will fail** with connection error
+- **Package cannot download enrollment or assessment data** - all Excel files are on the DOWN server
+- **`fetch_enr()` and `fetch_assessment()` will fail** with connection error
 - **Cached data (if any) will work** - check with `cache_status()`
-- **Tests skip gracefully** - 8 tests skip when server is down
+- **Tests skip gracefully** - tests skip when server is down
 
 ---
 
 ## Package Functions
 
-### When Server is Up
+### Enrollment Functions
+
+#### When Server is Up
 
 ```r
 # Download enrollment data
@@ -77,18 +81,54 @@ enr_multi <- fetch_enr_multi(2022:2024)
 get_available_years()
 ```
 
-### When Server is Down (Current State)
+#### When Server is Down (Current State)
 
 ```r
-# Check server status
-check_server("https://www.cde.state.co.us")
-
 # Check cache for previously downloaded data
 cache_status()
 
 # If you have cached data
 enr <- fetch_enr(2024, use_cache = TRUE)
 ```
+
+### Assessment Functions (CMAS)
+
+CMAS (Colorado Measures of Academic Success) is Colorado's state assessment system.
+
+#### Available Years
+- 2015-2019, 2021-2025 (no 2020 due to COVID waiver)
+
+#### Subjects
+- ELA (English Language Arts)
+- Math
+- Science (grades 5, 8, 11)
+- CSLA (Colorado Spanish Language Arts)
+
+#### When Server is Up
+
+```r
+# Download assessment data
+assess <- fetch_assessment(2024)
+
+# Get specific subject
+math_2024 <- fetch_assessment(2024, subject = "math")
+
+# Get multiple years
+assess_multi <- fetch_assessment_multi(2022:2024)
+
+# Get available assessment years
+get_available_assessment_years()
+```
+
+#### Assessment URL Patterns
+
+Assessment data is downloaded from:
+- `https://www.cde.state.co.us/assessment/{year}_cmas_{subject}_disaggregatedachievementresults`
+
+Example URLs:
+- ELA 2024: `https://www.cde.state.co.us/assessment/2024_cmas_ela_disaggregatedachievementresults`
+- Math 2024: `https://www.cde.state.co.us/assessment/2024_cmas_math_disaggregatedachievementresults`
+- Science 2024: `https://www.cde.state.co.us/assessment/2024_cmas_science_disaggregatedachievementresults`
 
 ---
 

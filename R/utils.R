@@ -11,7 +11,7 @@ utils::globalVariables(
     "district_name", "campus_name", "n_students", "pct", "is_charter",
     "is_state", "is_district", "is_campus", "race_ethnicity", "gender",
     "economically_disadvantaged", "english_learner", "male", "female",
-    "aggregation_flag")
+    "aggregation_flag", "is_proficient", "school_id")
 )
 
 
