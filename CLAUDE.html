@@ -40,6 +40,24 @@
 <h2 id="critical-data-source-rules">CRITICAL DATA SOURCE RULES<a class="anchor" aria-label="anchor" href="#critical-data-source-rules"></a></h2>
 <p><strong>NEVER use Urban Institute API, NCES CCD, or ANY federal data source</strong> — the entire point of these packages is to provide STATE-LEVEL data directly from state DOEs. Federal sources aggregate/transform data differently and lose state-specific details. If a state DOE source is broken, FIX IT or find an alternative STATE source — do not fall back to federal data.</p>
 <hr></div>
+<div class="section level2">
+<h2 id="valid-filter-values-tidy-enrollment-via-fetch_enrtidy--true">Valid Filter Values (tidy enrollment via <code>fetch_enr(tidy = TRUE)</code>)<a class="anchor" aria-label="anchor" href="#valid-filter-values-tidy-enrollment-via-fetch_enrtidy--true"></a></h2>
+<div class="section level3">
+<h3 id="subgroup">subgroup<a class="anchor" aria-label="anchor" href="#subgroup"></a></h3>
+<p><code>total_enrollment</code>, <code>male</code>, <code>female</code>, <code>native_american</code>, <code>asian</code>, <code>black</code>, <code>hispanic</code>, <code>white</code>, <code>pacific_islander</code>, <code>multiracial</code></p>
+<p><strong>NOT in tidy enrollment:</strong> No special population subgroups (econ_disadv, lep, special_ed) are available in the CDE enrollment data. Gender (male/female) is computed by summing race-gender cross-tabulations.</p>
+</div>
+<div class="section level3">
+<h3 id="grade_level">grade_level<a class="anchor" aria-label="anchor" href="#grade_level"></a></h3>
+<p><code>PK</code>, <code>K</code>, <code>01</code>, <code>02</code>, <code>03</code>, <code>04</code>, <code>05</code>, <code>06</code>, <code>07</code>, <code>08</code>, <code>09</code>, <code>10</code>, <code>11</code>, <code>12</code>, <code>TOTAL</code></p>
+<p><strong>Common trap:</strong> Raw CDE data uses codes like <code>"ALL GRADE LEVELS"</code>, <code>"004"</code> (PK), <code>"007"</code> (K), <code>"010"</code> (1st), etc. The <code><a href="reference/process_enr.html">process_enr()</a></code> function normalizes these to <code>PK</code>, <code>K</code>, <code>01</code>, etc. Always filter on the normalized values.</p>
+</div>
+<div class="section level3">
+<h3 id="entity-flags">entity flags<a class="anchor" aria-label="anchor" href="#entity-flags"></a></h3>
+<p>No <code>id_enr_aggs()</code> function. The <code>aggregation_flag</code> column is added by <code><a href="reference/tidy_enr.html">tidy_enr()</a></code>: - <code>"campus"</code> – has both district_id and campus_id (campus_id != “0000”) - <code>"district"</code> – has district_id only (campus_id == “0000”) - <code>"state"</code> – fallback</p>
+<p>Note: No boolean <code>is_state</code>, <code>is_district</code>, <code>is_campus</code>, or <code>is_charter</code> flags. Use <code>aggregation_flag</code> or the <code>type</code> column (<code>"District"</code> or <code>"Campus"</code>) instead.</p>
+<hr></div>
+</div>
 <div id="coschooldata-package---colorado-school-data" class="section level1">
 
 <p>This package provides access to Colorado school enrollment and assessment data from the Colorado Department of Education (CDE).</p>
