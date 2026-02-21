@@ -4,6 +4,28 @@
 
 ---
 
+## Valid Filter Values (tidy enrollment via `fetch_enr(tidy = TRUE)`)
+
+### subgroup
+`total_enrollment`, `male`, `female`, `native_american`, `asian`, `black`, `hispanic`, `white`, `pacific_islander`, `multiracial`
+
+**NOT in tidy enrollment:** No special population subgroups (econ_disadv, lep, special_ed) are available in the CDE enrollment data. Gender (male/female) is computed by summing race-gender cross-tabulations.
+
+### grade_level
+`PK`, `K`, `01`, `02`, `03`, `04`, `05`, `06`, `07`, `08`, `09`, `10`, `11`, `12`, `TOTAL`
+
+**Common trap:** Raw CDE data uses codes like `"ALL GRADE LEVELS"`, `"004"` (PK), `"007"` (K), `"010"` (1st), etc. The `process_enr()` function normalizes these to `PK`, `K`, `01`, etc. Always filter on the normalized values.
+
+### entity flags
+No `id_enr_aggs()` function. The `aggregation_flag` column is added by `tidy_enr()`:
+- `"campus"` -- has both district_id and campus_id (campus_id != "0000")
+- `"district"` -- has district_id only (campus_id == "0000")
+- `"state"` -- fallback
+
+Note: No boolean `is_state`, `is_district`, `is_campus`, or `is_charter` flags. Use `aggregation_flag` or the `type` column (`"District"` or `"Campus"`) instead.
+
+---
+
 # coschooldata Package - Colorado School Data
 
 This package provides access to Colorado school enrollment and assessment data from the Colorado Department of Education (CDE).
