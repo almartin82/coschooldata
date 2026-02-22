@@ -10,17 +10,24 @@
 #' Fetch Colorado enrollment data
 #'
 #' Downloads and returns enrollment data from the Colorado Department of
-#' Education.
+#' Education. When tidy=TRUE (default), returns data in long format with
+#' standard columns: end_year, district_id, district_name, campus_id,
+#' campus_name, grade_level, subgroup, n_students, pct, is_state,
+#' is_district, is_school, is_charter.
 #'
 #' @param end_year School year end (2023-24 = 2024).
-#' @param tidy If TRUE (default), returns data in tidy format.
+#' @param tidy If TRUE (default), returns data in tidy long format.
+#'   If FALSE, returns processed wide format.
 #' @param use_cache If TRUE (default), uses locally cached data when available.
 #' @return Data frame with enrollment data
 #' @export
 #' @examples
 #' \dontrun{
-#' # Get 2024 enrollment data
+#' # Get 2024 enrollment data (tidy format)
 #' enr_2024 <- fetch_enr(2024)
+#'
+#' # Get wide format
+#' enr_wide <- fetch_enr(2024, tidy = FALSE)
 #'
 #' # Force fresh download
 #' enr_fresh <- fetch_enr(2024, use_cache = FALSE)
@@ -36,31 +43,60 @@ fetch_enr <- function(end_year, tidy = TRUE, use_cache = TRUE) {
     ))
   }
 
+  # Determine cache type
+  cache_type <- if (tidy) "tidy" else "wide"
+
   # Check cache first
+  if (use_cache && cache_exists(end_year, cache_type)) {
+    message(paste("Using cached", cache_type, "data for", end_year))
+    return(read_cache(end_year, cache_type))
+  }
+
+  # Check if we have raw data cached (from previous fetch_enr calls)
   if (use_cache && cache_exists(end_year, "enrollment")) {
-    message(paste("Using cached data for", end_year))
-    return(read_cache(end_year, "enrollment"))
-  }
-
-  # Get raw data
-  raw <- get_raw_enr(end_year)
-
-  # Extract from list if needed
-  if (is.list(raw) && !is.data.frame(raw)) {
-    if ("district" %in% names(raw)) {
-      result <- raw$district
-    } else if ("enrollment" %in% names(raw)) {
-      result <- raw$enrollment
-    } else {
-      result <- raw[[1]]
-    }
+    message(paste("Processing cached raw data for", end_year))
+    raw_df <- read_cache(end_year, "enrollment")
   } else {
-    result <- raw
+    # Download raw data
+    raw_list <- get_raw_enr(end_year)
+
+    # Extract data frame from list
+    if (is.list(raw_list) && !is.data.frame(raw_list)) {
+      if ("school" %in% names(raw_list)) {
+        raw_df <- raw_list$school
+      } else if ("district" %in% names(raw_list)) {
+        raw_df <- raw_list$district
+      } else if ("enrollment" %in% names(raw_list)) {
+        raw_df <- raw_list$enrollment
+      } else {
+        raw_df <- raw_list[[1]]
+      }
+    } else {
+      raw_df <- raw_list
+    }
+
+    # Cache raw data
+    if (use_cache) {
+      write_cache(raw_df, end_year, "enrollment")
+    }
   }
 
-  # Cache the result
+  # Process raw data to wide format
+  wide <- process_enr(raw_df, end_year)
+
+  if (!tidy) {
+    if (use_cache) {
+      write_cache(wide, end_year, "wide")
+    }
+    return(wide)
+  }
+
+  # Tidy the wide data
+  result <- tidy_enr(wide)
+
+  # Cache tidy result
   if (use_cache) {
-    write_cache(result, end_year, "enrollment")
+    write_cache(result, end_year, "tidy")
   }
 
   result
