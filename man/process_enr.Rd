@@ -17,5 +17,6 @@ Data frame in wide format with standardized columns
 \description{
 Transforms the raw Excel data into a standardized wide format with proper
 column names and data types. Colorado's data has a 2-row header structure
+and different column layouts across years.
 }
 \keyword{internal}
