@@ -224,6 +224,26 @@ stopifnot(nrow(demo_shift) > 0)
 demo_shift
 ```
 
+```{r demographic-shift-chart}
+print(demo_shift)
+
+demo_shift |>
+  mutate(subgroup = forcats::fct_reorder(subgroup, n_students, .fun = max)) |>
+  ggplot(aes(x = subgroup, y = pct, fill = factor(end_year))) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = paste0(pct, "%")),
+            position = position_dodge(width = 0.9), vjust = -0.3, size = 3) +
+  scale_fill_manual(values = c("2020" = "#90CAF9", "2024" = "#1565C0")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Colorado Demographic Shift: 2020 vs 2024",
+    subtitle = "White share dropped 2.4 percentage points; multiracial surged",
+    x = NULL,
+    y = "% of Total Enrollment",
+    fill = "Year"
+  )
+```
+
 ---
 
 ## 6. 261 charter schools serve 135,223 students
@@ -257,6 +277,23 @@ top_charters <- charters |>
 print(top_charters)
 ```
 
+```{r charter-chart}
+stopifnot(nrow(top_charters) > 0)
+
+top_charters |>
+  mutate(campus_name = forcats::fct_reorder(campus_name, n_students)) |>
+  ggplot(aes(x = n_students, y = campus_name)) +
+  geom_col(fill = "#00897B") +
+  geom_text(aes(label = scales::comma(n_students)), hjust = -0.1, size = 3.5) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Colorado's 5 Largest Charter Schools (2024)",
+    subtitle = "261 charter schools serve 15.3% of all public school students",
+    x = "Total Enrollment",
+    y = NULL
+  )
+```
+
 ---
 
 ## 7. Adams-Arapahoe (Aurora) is Colorado's most diverse district
@@ -274,6 +311,24 @@ aurora <- enr_2024 |>
 
 stopifnot(nrow(aurora) > 0)
 aurora
+```
+
+```{r aurora-chart}
+print(aurora)
+
+aurora |>
+  mutate(subgroup = forcats::fct_reorder(subgroup, pct)) |>
+  ggplot(aes(x = pct, y = subgroup, fill = subgroup)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = paste0(pct, "%")), hjust = -0.1, size = 3.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    title = "Adams-Arapahoe 28J (Aurora): No Racial Majority",
+    subtitle = "Hispanic students are 57% of enrollment",
+    x = "% of District Enrollment",
+    y = NULL
+  )
 ```
 
 ---
@@ -340,6 +395,23 @@ gainers <- changes |>
 
 stopifnot(nrow(gainers) > 0)
 gainers
+```
+
+```{r gainers-chart}
+print(gainers)
+
+gainers |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct_change)) |>
+  ggplot(aes(x = pct_change, y = district_name)) +
+  geom_col(fill = "#4CAF50") +
+  geom_text(aes(label = paste0("+", pct_change, "%")), hjust = -0.1, size = 3) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Fastest-Growing Colorado Districts (2020-2024)",
+    subtitle = "Among districts with 1,000+ students in 2020",
+    x = "% Change in Enrollment",
+    y = NULL
+  )
 ```
 
 ---
@@ -424,6 +496,28 @@ smallest <- enr_2024 |>
 print(smallest)
 ```
 
+```{r district-size-chart}
+stopifnot(nrow(size_cats) > 0)
+
+size_cats |>
+  mutate(size = factor(size, levels = c("Tiny (<1K)", "Small (1K-5K)",
+                                         "Medium (5K-20K)", "Large (20K+)"))) |>
+  ggplot(aes(x = size, y = n_districts, fill = size)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = paste0(n_districts, " districts\n(",
+                                pct_students, "% of students)")),
+            vjust = -0.2, size = 3) +
+  scale_fill_manual(values = c("Tiny (<1K)" = "#FFCC80", "Small (1K-5K)" = "#FFB74D",
+                                "Medium (5K-20K)" = "#FF9800", "Large (20K+)" = "#E65100")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Colorado District Size Distribution (2024)",
+    subtitle = "115 tiny districts serve only 4.5% of students",
+    x = NULL,
+    y = "Number of Districts"
+  )
+```
+
 ---
 
 ## 12. Las Animas RE-1 lost 60% of its enrollment
@@ -437,6 +531,23 @@ losers <- changes |>
 
 stopifnot(nrow(losers) > 0)
 losers
+```
+
+```{r losers-chart}
+print(losers)
+
+losers |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct_change)) |>
+  ggplot(aes(x = pct_change, y = district_name)) +
+  geom_col(fill = "#F44336") +
+  geom_text(aes(label = paste0(pct_change, "%")), hjust = 1.1, size = 3, color = "white") +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0))) +
+  labs(
+    title = "Fastest-Shrinking Colorado Districts (2020-2024)",
+    subtitle = "Las Animas RE-1 lost 60% of its enrollment",
+    x = "% Change in Enrollment",
+    y = NULL
+  )
 ```
 
 ---
@@ -456,6 +567,26 @@ frl_top5 <- enr_2024 |>
 
 stopifnot(nrow(frl_top5) > 0)
 frl_top5
+```
+
+```{r frl-top5-chart}
+print(frl_top5)
+
+frl_top5 |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct)) |>
+  ggplot(aes(x = pct, y = district_name)) +
+  geom_col(fill = "#E65100") +
+  geom_text(aes(label = paste0(pct, "%")), hjust = -0.1, size = 3.5) +
+  geom_vline(xintercept = 45.2, linetype = "dashed", alpha = 0.5) +
+  annotate("text", x = 45.2, y = 0.5, label = "State avg\n45.2%",
+           hjust = 1.1, size = 2.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Highest FRL Rate Districts (2024)",
+    subtitle = "Among districts with 1,000+ students",
+    x = "Free/Reduced Lunch %",
+    y = NULL
+  )
 ```
 
 ---
@@ -496,7 +627,7 @@ gender |>
 
 ---
 
-## 15. Top 10 districts serve 55% of all students
+## 15. Top 10 districts serve 53% of all students
 
 Just 10 districts out of 187 educate more than half of Colorado's public school students, showing extreme concentration of enrollment in the Front Range metro areas.
 
@@ -549,7 +680,7 @@ Colorado's school enrollment data reveals:
 - **Charter expansion**: 261 charter schools enroll 15.3% of students
 - **Economic disparity**: 45.2% of students qualify for free/reduced lunch
 - **Fragmented system**: 115 tiny districts under 1,000 students
-- **Concentrated enrollment**: Top 10 districts serve 55% of students
+- **Concentrated enrollment**: Top 10 districts serve 53% of students
 
 ---
 

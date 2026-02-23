@@ -153,6 +153,8 @@ demo_shift
 #> 10     2024       white     444973 50.5
 ```
 
+![Colorado demographic shift](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/demographic-shift-chart-1.png)
+
 ---
 
 ### 6. 261 charter schools serve 135,223 students
@@ -197,6 +199,8 @@ print(top_charters)
 #> 5 Charter School Institute     The Pinnacle Charter School       1909
 ```
 
+![Top charter schools](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/charter-chart-1.png)
+
 ---
 
 ### 7. Adams-Arapahoe (Aurora) is Colorado's most diverse district
@@ -221,6 +225,8 @@ aurora
 #> 4 Adams-Arapahoe 28J multiracial       2305  5.9
 #> 5 Adams-Arapahoe 28J       asian       1867  4.8
 ```
+
+![Aurora demographics](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/aurora-chart-1.png)
 
 ---
 
@@ -279,6 +285,8 @@ gainers
 #>  9 Platte Valley RE-7             1093   1179     86        7.9
 #> 10 Harrison 2                    11518  12386    868        7.5
 ```
+
+![Fastest-growing districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/gainers-chart-1.png)
 
 ---
 
@@ -355,6 +363,8 @@ size_cats
 #> 4 Tiny (<1K)              115          39709          4.5
 ```
 
+![District size distribution](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/district-size-chart-1.png)
+
 ---
 
 ### 12. Las Animas RE-1 lost 60% of its enrollment
@@ -383,6 +393,8 @@ losers
 #> 10 Ellicott 22                  1142    990   -152      -13.3
 ```
 
+![Fastest-shrinking districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/losers-chart-1.png)
+
 ---
 
 ### 13. Adams County 14 has 86% economically disadvantaged students
@@ -407,6 +419,8 @@ frl_top5
 #> 4         Adams-Arapahoe 28J      31204 79.7
 #> 5             East Otero R-1       1055 79.6
 ```
+
+![Highest FRL rate districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/frl-top5-chart-1.png)
 
 ---
 
