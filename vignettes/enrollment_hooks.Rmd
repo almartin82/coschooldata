@@ -27,6 +27,31 @@ library(tidyr)
 library(ggplot2)
 
 theme_set(theme_minimal(base_size = 14))
+
+# Load pre-computed data bundled with the package.
+# This ensures vignettes build reliably in CI without network access.
+# Falls back to live fetch if bundled data is unavailable.
+enr <- tryCatch(
+  readRDS(system.file("extdata", "enrollment_bundled.rds", package = "coschooldata")),
+  error = function(e) {
+    warning("Bundled data not found, fetching live data")
+    fetch_enr_multi(c(2020, 2024), use_cache = TRUE)
+  }
+)
+if (is.null(enr) || nrow(enr) == 0) {
+  enr <- fetch_enr_multi(c(2020, 2024), use_cache = TRUE)
+}
+
+enr_2024 <- tryCatch(
+  readRDS(system.file("extdata", "enrollment_2024_tidy.rds", package = "coschooldata")),
+  error = function(e) {
+    warning("Bundled data not found, fetching live data")
+    fetch_enr(2024, use_cache = TRUE)
+  }
+)
+if (is.null(enr_2024) || nrow(enr_2024) == 0) {
+  enr_2024 <- fetch_enr(2024, use_cache = TRUE)
+}
 ```
 
 This vignette explores Colorado's public school enrollment data, surfacing key trends and demographic patterns. Colorado is part of the [state schooldata project](https://github.com/almartin82/njschooldata), a family of R packages providing consistent access to school enrollment data from all 50 states.
@@ -40,8 +65,6 @@ This vignette explores Colorado's public school enrollment data, surfacing key t
 The pandemic accelerated enrollment decline in a state that had been growing for a decade. Colorado shed 3.5% of its student population between 2020 and 2024.
 
 ```{r statewide-trend}
-enr <- fetch_enr_multi(c(2020, 2024), use_cache = TRUE)
-
 state_totals <- enr |>
   filter(is_state, subgroup == "total_enrollment", grade_level == "TOTAL") |>
   select(end_year, n_students) |>
@@ -154,8 +177,6 @@ ggplot(front_range, aes(x = end_year, y = n_students, color = district_name)) +
 Hispanic students make up the second-largest group in Colorado, just behind white students. The Hispanic share grew from 33.9% in 2020 to 35.5% in 2024.
 
 ```{r demographics}
-enr_2024 <- fetch_enr(2024, use_cache = TRUE)
-
 demographics <- enr_2024 |>
   filter(is_state, grade_level == "TOTAL",
          subgroup %in% c("hispanic", "white", "black", "asian",
