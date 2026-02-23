@@ -1,7 +1,9 @@
 # Tidy enrollment data
 
 Transforms wide enrollment data to long format with subgroup column.
-Matches the PRD specification for tidy format.
+Creates district-level and state-level aggregates from school-level
+data. Adds standard entity flags: is_state, is_district, is_school,
+is_charter.
 
 ## Usage
 
@@ -17,4 +19,7 @@ tidy_enr(df)
 
 ## Value
 
-A long data.frame of tidied enrollment data
+A long data.frame of tidied enrollment data with standard columns:
+end_year, district_id, district_name, campus_id, campus_name,
+grade_level, subgroup, n_students, pct, is_state, is_district,
+is_school, is_charter

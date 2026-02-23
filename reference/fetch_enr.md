@@ -1,7 +1,10 @@
 # Fetch Colorado enrollment data
 
 Downloads and returns enrollment data from the Colorado Department of
-Education.
+Education. When tidy=TRUE (default), returns data in long format with
+standard columns: end_year, district_id, district_name, campus_id,
+campus_name, grade_level, subgroup, n_students, pct, is_state,
+is_district, is_school, is_charter.
 
 ## Usage
 
@@ -17,7 +20,8 @@ fetch_enr(end_year, tidy = TRUE, use_cache = TRUE)
 
 - tidy:
 
-  If TRUE (default), returns data in tidy format.
+  If TRUE (default), returns data in tidy long format. If FALSE, returns
+  processed wide format.
 
 - use_cache:
 
@@ -31,8 +35,11 @@ Data frame with enrollment data
 
 ``` r
 if (FALSE) { # \dontrun{
-# Get 2024 enrollment data
+# Get 2024 enrollment data (tidy format)
 enr_2024 <- fetch_enr(2024)
+
+# Get wide format
+enr_wide <- fetch_enr(2024, tidy = FALSE)
 
 # Force fresh download
 enr_fresh <- fetch_enr(2024, use_cache = FALSE)

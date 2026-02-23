@@ -2,7 +2,7 @@
 
 Transforms the raw Excel data into a standardized wide format with
 proper column names and data types. Colorado's data has a 2-row header
-structure
+structure and different column layouts across years.
 
 ## Usage
 
