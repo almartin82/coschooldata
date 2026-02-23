@@ -15,7 +15,7 @@ Fetch and analyze Colorado school enrollment data from the Colorado Department o
 
 Colorado is part of the [state schooldata project](https://github.com/almartin82/njschooldata), a family of R packages providing consistent access to school enrollment data from all 50 states. The original [njschooldata](https://github.com/almartin82/njschooldata) package for New Jersey inspired this effort to make state education data accessible everywhere.
 
-**2 years of enrollment data (2020 and 2024).** 881,000 students across 187 districts in the Centennial State. Here are fifteen stories hiding in the numbers:
+**2 years of enrollment data (2020 and 2024).** 881,000 students across 186 districts in the Centennial State. Here are fifteen stories hiding in the numbers:
 
 ---
 
@@ -448,7 +448,7 @@ gender
 
 ### 15. Top 10 districts serve 53% of all students
 
-Just 10 districts out of 187 educate more than half of Colorado's public school students, showing extreme concentration of enrollment in the Front Range metro areas.
+Just 10 districts out of 186 educate more than half of Colorado's public school students, showing extreme concentration of enrollment in the Front Range metro areas.
 
 ```r
 district_totals <- enr_2024 |>
@@ -582,7 +582,7 @@ Data is from the Student October Count, collected on the first school day in Oct
 
 ### What's Included
 
-- **Levels:** State, district (~187), school (~1,900)
+- **Levels:** State, district (~186), school (~1,900)
 - **Demographics:** Hispanic, White, Black, Asian, Native American, Pacific Islander, Multiracial
 - **Gender:** Male, Female
 - **Economic:** Free/Reduced Lunch (2024 only)
