@@ -282,6 +282,39 @@ demo_shift
 #> 10     2024       white     444973 50.5
 ```
 
+``` r
+print(demo_shift)
+#>    end_year    subgroup n_students  pct
+#> 1      2020       asian      29207  3.2
+#> 2      2020       black      41550  4.6
+#> 3      2020    hispanic     309900 33.9
+#> 4      2020 multiracial      40785  4.5
+#> 5      2020       white     482951 52.9
+#> 6      2024       asian      28899  3.3
+#> 7      2024       black      40070  4.5
+#> 8      2024    hispanic     312685 35.5
+#> 9      2024 multiracial      46570  5.3
+#> 10     2024       white     444973 50.5
+
+demo_shift |>
+  mutate(subgroup = forcats::fct_reorder(subgroup, n_students, .fun = max)) |>
+  ggplot(aes(x = subgroup, y = pct, fill = factor(end_year))) +
+  geom_col(position = "dodge") +
+  geom_text(aes(label = paste0(pct, "%")),
+            position = position_dodge(width = 0.9), vjust = -0.3, size = 3) +
+  scale_fill_manual(values = c("2020" = "#90CAF9", "2024" = "#1565C0")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Colorado Demographic Shift: 2020 vs 2024",
+    subtitle = "White share dropped 2.4 percentage points; multiracial surged",
+    x = NULL,
+    y = "% of Total Enrollment",
+    fill = "Year"
+  )
+```
+
+![](enrollment_hooks_files/figure-html/demographic-shift-chart-1.png)
+
 ------------------------------------------------------------------------
 
 ## 6. 261 charter schools serve 135,223 students
@@ -327,6 +360,25 @@ print(top_charters)
 #> 5 Charter School Institute     The Pinnacle Charter School       1909
 ```
 
+``` r
+stopifnot(nrow(top_charters) > 0)
+
+top_charters |>
+  mutate(campus_name = forcats::fct_reorder(campus_name, n_students)) |>
+  ggplot(aes(x = n_students, y = campus_name)) +
+  geom_col(fill = "#00897B") +
+  geom_text(aes(label = scales::comma(n_students)), hjust = -0.1, size = 3.5) +
+  scale_x_continuous(labels = scales::comma, expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Colorado's 5 Largest Charter Schools (2024)",
+    subtitle = "261 charter schools serve 15.3% of all public school students",
+    x = "Total Enrollment",
+    y = NULL
+  )
+```
+
+![](enrollment_hooks_files/figure-html/charter-chart-1.png)
+
 ------------------------------------------------------------------------
 
 ## 7. Adams-Arapahoe (Aurora) is Colorado’s most diverse district
@@ -353,6 +405,32 @@ aurora
 #> 4 Adams-Arapahoe 28J multiracial       2305  5.9
 #> 5 Adams-Arapahoe 28J       asian       1867  4.8
 ```
+
+``` r
+print(aurora)
+#>        district_name    subgroup n_students  pct
+#> 1 Adams-Arapahoe 28J    hispanic      22430 57.3
+#> 2 Adams-Arapahoe 28J       black       6573 16.8
+#> 3 Adams-Arapahoe 28J       white       5355 13.7
+#> 4 Adams-Arapahoe 28J multiracial       2305  5.9
+#> 5 Adams-Arapahoe 28J       asian       1867  4.8
+
+aurora |>
+  mutate(subgroup = forcats::fct_reorder(subgroup, pct)) |>
+  ggplot(aes(x = pct, y = subgroup, fill = subgroup)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = paste0(pct, "%")), hjust = -0.1, size = 3.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  scale_fill_brewer(palette = "Dark2") +
+  labs(
+    title = "Adams-Arapahoe 28J (Aurora): No Racial Majority",
+    subtitle = "Hispanic students are 57% of enrollment",
+    x = "% of District Enrollment",
+    y = NULL
+  )
+```
+
+![](enrollment_hooks_files/figure-html/aurora-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -449,6 +527,38 @@ gainers
 #>  9 Platte Valley RE-7             1093   1179     86        7.9
 #> 10 Harrison 2                    11518  12386    868        7.5
 ```
+
+``` r
+print(gainers)
+#> # A tibble: 10 × 5
+#>    district_name                `2020` `2024` change pct_change
+#>    <chr>                         <dbl>  <dbl>  <dbl>      <dbl>
+#>  1 Byers 32J                      2344   6456   4112      175. 
+#>  2 Education reEnvisioned BOCES   2836   7114   4278      151. 
+#>  3 Bennett 29J                    1117   1645    528       47.3
+#>  4 Charter School Institute      18275  23013   4738       25.9
+#>  5 School District 27J           19248  23108   3860       20.1
+#>  6 Elizabeth School District      2373   2614    241       10.2
+#>  7 Strasburg 31J                  1080   1187    107        9.9
+#>  8 District 49                   23890  25799   1909        8  
+#>  9 Platte Valley RE-7             1093   1179     86        7.9
+#> 10 Harrison 2                    11518  12386    868        7.5
+
+gainers |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct_change)) |>
+  ggplot(aes(x = pct_change, y = district_name)) +
+  geom_col(fill = "#4CAF50") +
+  geom_text(aes(label = paste0("+", pct_change, "%")), hjust = -0.1, size = 3) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Fastest-Growing Colorado Districts (2020-2024)",
+    subtitle = "Among districts with 1,000+ students in 2020",
+    x = "% Change in Enrollment",
+    y = NULL
+  )
+```
+
+![](enrollment_hooks_files/figure-html/gainers-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -582,6 +692,30 @@ print(smallest)
 #> 10        Silverton 1         75
 ```
 
+``` r
+stopifnot(nrow(size_cats) > 0)
+
+size_cats |>
+  mutate(size = factor(size, levels = c("Tiny (<1K)", "Small (1K-5K)",
+                                         "Medium (5K-20K)", "Large (20K+)"))) |>
+  ggplot(aes(x = size, y = n_districts, fill = size)) +
+  geom_col(show.legend = FALSE) +
+  geom_text(aes(label = paste0(n_districts, " districts\n(",
+                                pct_students, "% of students)")),
+            vjust = -0.2, size = 3) +
+  scale_fill_manual(values = c("Tiny (<1K)" = "#FFCC80", "Small (1K-5K)" = "#FFB74D",
+                                "Medium (5K-20K)" = "#FF9800", "Large (20K+)" = "#E65100")) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.2))) +
+  labs(
+    title = "Colorado District Size Distribution (2024)",
+    subtitle = "115 tiny districts serve only 4.5% of students",
+    x = NULL,
+    y = "Number of Districts"
+  )
+```
+
+![](enrollment_hooks_files/figure-html/district-size-chart-1.png)
+
 ------------------------------------------------------------------------
 
 ## 12. Las Animas RE-1 lost 60% of its enrollment
@@ -611,6 +745,38 @@ losers
 #> 10 Ellicott 22                  1142    990   -152      -13.3
 ```
 
+``` r
+print(losers)
+#> # A tibble: 10 × 5
+#>    district_name              `2020` `2024` change pct_change
+#>    <chr>                       <dbl>  <dbl>  <dbl>      <dbl>
+#>  1 Las Animas RE-1              2406    956  -1450      -60.3
+#>  2 Cheyenne Mountain 12         5309   3739  -1570      -29.6
+#>  3 Mapleton 1                   9131   7017  -2114      -23.2
+#>  4 Sheridan 2                   1359   1058   -301      -22.1
+#>  5 Adams County 14              6610   5484  -1126      -17  
+#>  6 Valley RE-1                  2258   1887   -371      -16.4
+#>  7 Westminster Public Schools   9089   7631  -1458      -16  
+#>  8 Manitou Springs 14           1441   1238   -203      -14.1
+#>  9 Monte Vista C-8              1168   1010   -158      -13.5
+#> 10 Ellicott 22                  1142    990   -152      -13.3
+
+losers |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct_change)) |>
+  ggplot(aes(x = pct_change, y = district_name)) +
+  geom_col(fill = "#F44336") +
+  geom_text(aes(label = paste0(pct_change, "%")), hjust = 1.1, size = 3, color = "white") +
+  scale_x_continuous(expand = expansion(mult = c(0.05, 0))) +
+  labs(
+    title = "Fastest-Shrinking Colorado Districts (2020-2024)",
+    subtitle = "Las Animas RE-1 lost 60% of its enrollment",
+    x = "% Change in Enrollment",
+    y = NULL
+  )
+```
+
+![](enrollment_hooks_files/figure-html/losers-chart-1.png)
+
 ------------------------------------------------------------------------
 
 ## 13. Adams County 14 has 86% economically disadvantaged students
@@ -636,6 +802,34 @@ frl_top5
 #> 4         Adams-Arapahoe 28J      31204 79.7
 #> 5             East Otero R-1       1055 79.6
 ```
+
+``` r
+print(frl_top5)
+#>                district_name n_students  pct
+#> 1            Adams County 14       4728 86.2
+#> 2 Westminster Public Schools       6442 84.4
+#> 3             Pueblo City 60      12130 83.4
+#> 4         Adams-Arapahoe 28J      31204 79.7
+#> 5             East Otero R-1       1055 79.6
+
+frl_top5 |>
+  mutate(district_name = forcats::fct_reorder(district_name, pct)) |>
+  ggplot(aes(x = pct, y = district_name)) +
+  geom_col(fill = "#E65100") +
+  geom_text(aes(label = paste0(pct, "%")), hjust = -0.1, size = 3.5) +
+  geom_vline(xintercept = 45.2, linetype = "dashed", alpha = 0.5) +
+  annotate("text", x = 45.2, y = 0.5, label = "State avg\n45.2%",
+           hjust = 1.1, size = 2.5) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.15))) +
+  labs(
+    title = "Highest FRL Rate Districts (2024)",
+    subtitle = "Among districts with 1,000+ students",
+    x = "Free/Reduced Lunch %",
+    y = NULL
+  )
+```
+
+![](enrollment_hooks_files/figure-html/frl-top5-chart-1.png)
 
 ------------------------------------------------------------------------
 
@@ -684,7 +878,7 @@ gender |>
 
 ------------------------------------------------------------------------
 
-## 15. Top 10 districts serve 55% of all students
+## 15. Top 10 districts serve 53% of all students
 
 Just 10 districts out of 187 educate more than half of Colorado’s public
 school students, showing extreme concentration of enrollment in the
@@ -766,7 +960,7 @@ Colorado’s school enrollment data reveals:
 - **Economic disparity**: 45.2% of students qualify for free/reduced
   lunch
 - **Fragmented system**: 115 tiny districts under 1,000 students
-- **Concentrated enrollment**: Top 10 districts serve 55% of students
+- **Concentrated enrollment**: Top 10 districts serve 53% of students
 
 ------------------------------------------------------------------------
 
