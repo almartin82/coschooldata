@@ -62,7 +62,7 @@
 <h2 id="why-coschooldata">Why coschooldata?<a class="anchor" aria-label="anchor" href="#why-coschooldata"></a>
 </h2>
 <p>Colorado is part of the <a href="https://github.com/almartin82/njschooldata" class="external-link">state schooldata project</a>, a family of R packages providing consistent access to school enrollment data from all 50 states. The original <a href="https://github.com/almartin82/njschooldata" class="external-link">njschooldata</a> package for New Jersey inspired this effort to make state education data accessible everywhere.</p>
-<p><strong>2 years of enrollment data (2020 and 2024).</strong> 881,000 students across 187 districts in the Centennial State. Here are fifteen stories hiding in the numbers:</p>
+<p><strong>2 years of enrollment data (2020 and 2024).</strong> 881,000 students across 186 districts in the Centennial State. Here are fifteen stories hiding in the numbers:</p>
 <hr>
 <div class="section level3">
 <h3 id="id_1-colorado-lost-31584-students-since-2020">1. Colorado lost 31,584 students since 2020<a class="anchor" aria-label="anchor" href="#id_1-colorado-lost-31584-students-since-2020"></a>
@@ -478,7 +478,7 @@
 <div class="section level3">
 <h3 id="id_15-top-10-districts-serve-53-of-all-students">15. Top 10 districts serve 53% of all students<a class="anchor" aria-label="anchor" href="#id_15-top-10-districts-serve-53-of-all-students"></a>
 </h3>
-<p>Just 10 districts out of 187 educate more than half of Colorado’s public school students, showing extreme concentration of enrollment in the Front Range metro areas.</p>
+<p>Just 10 districts out of 186 educate more than half of Colorado’s public school students, showing extreme concentration of enrollment in the Front Range metro areas.</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">district_totals</span> <span class="op">&lt;-</span> <span class="va">enr_2024</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">is_district</span>, <span class="va">subgroup</span> <span class="op">==</span> <span class="st">"total_enrollment"</span>, <span class="va">grade_level</span> <span class="op">==</span> <span class="st">"TOTAL"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -633,7 +633,7 @@
 </h3>
 <ul>
 <li>
-<strong>Levels:</strong> State, district (~187), school (~1,900)</li>
+<strong>Levels:</strong> State, district (~186), school (~1,900)</li>
 <li>
 <strong>Demographics:</strong> Hispanic, White, Black, Asian, Native American, Pacific Islander, Multiracial</li>
 <li>

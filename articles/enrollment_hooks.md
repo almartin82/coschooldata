@@ -41,7 +41,7 @@ a family of R packages providing consistent access to school enrollment
 data from all 50 states.
 
 **Data years:** 2020 and 2024 (Student October Count, collected by the
-Colorado Department of Education). 881,000 students across 187 districts
+Colorado Department of Education). 881,000 students across 186 districts
 in the Centennial State.
 
 ------------------------------------------------------------------------
@@ -132,6 +132,8 @@ print(top4 |> select(end_year, district_name, n_students))
 ggplot(top4, aes(x = end_year, y = n_students, color = district_name)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
+  geom_vline(xintercept = 2020.5, linetype = "dashed", alpha = 0.3) +
+  annotate("text", x = 2020.5, y = Inf, label = "COVID-19", vjust = 1.5, size = 3, alpha = 0.5) +
   scale_y_continuous(labels = scales::comma) +
   labs(
     title = "Colorado's Largest Districts: All Declining",
@@ -183,6 +185,8 @@ print(front_range |> select(end_year, district_name, n_students))
 ggplot(front_range, aes(x = end_year, y = n_students, color = district_name)) +
   geom_line(linewidth = 1.2) +
   geom_point(size = 3) +
+  geom_vline(xintercept = 2020.5, linetype = "dashed", alpha = 0.3) +
+  annotate("text", x = 2020.5, y = Inf, label = "COVID-19", vjust = 1.5, size = 3, alpha = 0.5) +
   scale_y_continuous(labels = scales::comma) +
   labs(
     title = "Front Range Giants: Enrollment Trends",
@@ -880,7 +884,7 @@ gender |>
 
 ## 15. Top 10 districts serve 53% of all students
 
-Just 10 districts out of 187 educate more than half of Colorado’s public
+Just 10 districts out of 186 educate more than half of Colorado’s public
 school students, showing extreme concentration of enrollment in the
 Front Range metro areas.
 

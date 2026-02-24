@@ -18,7 +18,7 @@ New Jersey inspired this effort to make state education data accessible
 everywhere.
 
 **2 years of enrollment data (2020 and 2024).** 881,000 students across
-187 districts in the Centennial State. Here are fifteen stories hiding
+186 districts in the Centennial State. Here are fifteen stories hiding
 in the numbers:
 
 ------------------------------------------------------------------------
@@ -515,7 +515,7 @@ Colorado gender distribution
 
 ### 15. Top 10 districts serve 53% of all students
 
-Just 10 districts out of 187 educate more than half of Colorado’s public
+Just 10 districts out of 186 educate more than half of Colorado’s public
 school students, showing extreme concentration of enrollment in the
 Front Range metro areas.
 
@@ -659,7 +659,7 @@ file links still point to the old domain.
 
 ### What’s Included
 
-- **Levels:** State, district (~187), school (~1,900)
+- **Levels:** State, district (~186), school (~1,900)
 - **Demographics:** Hispanic, White, Black, Asian, Native American,
   Pacific Islander, Multiracial
 - **Gender:** Male, Female
