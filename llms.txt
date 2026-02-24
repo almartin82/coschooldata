@@ -18,7 +18,7 @@ New Jersey inspired this effort to make state education data accessible
 everywhere.
 
 **2 years of enrollment data (2020 and 2024).** 881,000 students across
-186 districts in the Centennial State. Here are fifteen stories hiding
+187 districts in the Centennial State. Here are fifteen stories hiding
 in the numbers:
 
 ------------------------------------------------------------------------
@@ -178,11 +178,6 @@ demo_shift
 #> 10     2024       white     444973 50.5
 ```
 
-![Colorado demographic
-shift](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/demographic-shift-chart-1.png)
-
-Colorado demographic shift
-
 ------------------------------------------------------------------------
 
 ### 6. 261 charter schools serve 135,223 students
@@ -228,11 +223,6 @@ print(top_charters)
 #> 5 Charter School Institute     The Pinnacle Charter School       1909
 ```
 
-![Top charter
-schools](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/charter-chart-1.png)
-
-Top charter schools
-
 ------------------------------------------------------------------------
 
 ### 7. Adams-Arapahoe (Aurora) is Colorado’s most diverse district
@@ -259,11 +249,6 @@ aurora
 #> 4 Adams-Arapahoe 28J multiracial       2305  5.9
 #> 5 Adams-Arapahoe 28J       asian       1867  4.8
 ```
-
-![Aurora
-demographics](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/aurora-chart-1.png)
-
-Aurora demographics
 
 ------------------------------------------------------------------------
 
@@ -327,11 +312,6 @@ gainers
 #>  9 Platte Valley RE-7             1093   1179     86        7.9
 #> 10 Harrison 2                    11518  12386    868        7.5
 ```
-
-![Fastest-growing
-districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/gainers-chart-1.png)
-
-Fastest-growing districts
 
 ------------------------------------------------------------------------
 
@@ -415,11 +395,6 @@ size_cats
 #> 4 Tiny (<1K)              115          39709          4.5
 ```
 
-![District size
-distribution](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/district-size-chart-1.png)
-
-District size distribution
-
 ------------------------------------------------------------------------
 
 ### 12. Las Animas RE-1 lost 60% of its enrollment
@@ -449,11 +424,6 @@ losers
 #> 10 Ellicott 22                  1142    990   -152      -13.3
 ```
 
-![Fastest-shrinking
-districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/losers-chart-1.png)
-
-Fastest-shrinking districts
-
 ------------------------------------------------------------------------
 
 ### 13. Adams County 14 has 86% economically disadvantaged students
@@ -479,11 +449,6 @@ frl_top5
 #> 4         Adams-Arapahoe 28J      31204 79.7
 #> 5             East Otero R-1       1055 79.6
 ```
-
-![Highest FRL rate
-districts](https://almartin82.github.io/coschooldata/articles/enrollment_hooks_files/figure-html/frl-top5-chart-1.png)
-
-Highest FRL rate districts
 
 ------------------------------------------------------------------------
 
@@ -515,7 +480,7 @@ Colorado gender distribution
 
 ### 15. Top 10 districts serve 53% of all students
 
-Just 10 districts out of 186 educate more than half of Colorado’s public
+Just 10 districts out of 187 educate more than half of Colorado’s public
 school students, showing extreme concentration of enrollment in the
 Front Range metro areas.
 
@@ -659,7 +624,7 @@ file links still point to the old domain.
 
 ### What’s Included
 
-- **Levels:** State, district (~186), school (~1,900)
+- **Levels:** State, district (~187), school (~1,900)
 - **Demographics:** Hispanic, White, Black, Asian, Native American,
   Pacific Islander, Multiracial
 - **Gender:** Male, Female
