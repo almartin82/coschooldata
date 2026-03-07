@@ -91,15 +91,15 @@ hosts pages but data files still reference the old domain.
 
 ### Data Source Investigation Summary
 
-**Date of Investigation:** 2026-01-03
+**Date of Investigation:** 2026-01-03 (updated 2026-03-07)
 
 #### Server Status
 
-| Domain                | Status   | Notes                                                    |
-|-----------------------|----------|----------------------------------------------------------|
-| `www.cde.state.co.us` | **DOWN** | Connection refused (ICMP 100% loss)                      |
-| `ed.cde.state.co.us`  | **UP**   | New site, pages work, but file links point to old domain |
-| `data.colorado.gov`   | **UP**   | Has higher education data, NOT K-12 enrollment           |
+| Domain                | Status           | Notes                                                                        |
+|-----------------------|------------------|------------------------------------------------------------------------------|
+| `www.cde.state.co.us` | **INTERMITTENT** | DNS resolves, HTTP sometimes responds, but SSL connections frequently fail   |
+| `ed.cde.state.co.us`  | **UP**           | New site, pages work, file download links still point to www.cde.state.co.us |
+| `data.colorado.gov`   | **UP**           | Has higher education data, NOT K-12 enrollment                               |
 
 #### Pages Checked
 
@@ -288,7 +288,7 @@ The 8 skipped tests are expected when `www.cde.state.co.us` is down.
 
 ## Available Years
 
-**When working:** 2020-2025 (October 1 pupil count data)
+**When working:** 2020-2026 (October 1 pupil count data)
 
 ------------------------------------------------------------------------
 

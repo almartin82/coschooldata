@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">coschooldata</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.1.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,18 +80,18 @@
 <p>The primary data server <code>www.cde.state.co.us</code> is <strong>COMPLETELY UNREACHABLE</strong> (connection refused). A new site <code>ed.cde.state.co.us</code> hosts pages but data files still reference the old domain.</p>
 <div class="section level3">
 <h3 id="data-source-investigation-summary">Data Source Investigation Summary<a class="anchor" aria-label="anchor" href="#data-source-investigation-summary"></a></h3>
-<p><strong>Date of Investigation:</strong> 2026-01-03</p>
+<p><strong>Date of Investigation:</strong> 2026-01-03 (updated 2026-03-07)</p>
 <div class="section level4">
 <h4 id="server-status">Server Status<a class="anchor" aria-label="anchor" href="#server-status"></a></h4>
 <table class="table"><colgroup><col width="34%"><col width="34%"><col width="30%"></colgroup><thead><tr class="header"><th>Domain</th>
 <th>Status</th>
 <th>Notes</th>
 </tr></thead><tbody><tr class="odd"><td><code>www.cde.state.co.us</code></td>
-<td><strong>DOWN</strong></td>
-<td>Connection refused (ICMP 100% loss)</td>
+<td><strong>INTERMITTENT</strong></td>
+<td>DNS resolves, HTTP sometimes responds, but SSL connections frequently fail</td>
 </tr><tr class="even"><td><code>ed.cde.state.co.us</code></td>
 <td><strong>UP</strong></td>
-<td>New site, pages work, but file links point to old domain</td>
+<td>New site, pages work, file download links still point to www.cde.state.co.us</td>
 </tr><tr class="odd"><td><code>data.colorado.gov</code></td>
 <td><strong>UP</strong></td>
 <td>Has higher education data, NOT K-12 enrollment</td>
@@ -300,7 +300,7 @@
 </div>
 <div class="section level2">
 <h2 id="available-years-1">Available Years<a class="anchor" aria-label="anchor" href="#available-years-1"></a></h2>
-<p><strong>When working:</strong> 2020-2025 (October 1 pupil count data)</p>
+<p><strong>When working:</strong> 2020-2026 (October 1 pupil count data)</p>
 <hr><div class="section level3">
 <h3 id="git-commit-policy">GIT COMMIT POLICY<a class="anchor" aria-label="anchor" href="#git-commit-policy"></a></h3>
 <ul><li>Commits are allowed</li>
@@ -536,7 +536,7 @@ enr_multi &lt;- fetch_enr_multi(2020:2024, use_cache = TRUE)</code></pre>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Al Martin.</p>
+  <p>Developed by <a href="https://github.com/almartin82" class="external-link">Andy Martin</a>.</p>
 </div>
 
 <div class="pkgdown-footer-right">
