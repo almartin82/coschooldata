@@ -62,8 +62,13 @@ get_known_enrollment_urls <- function(end_year) {
    "https://ed.cde.state.co.us"
  )
 
- # Lookup table of verified URL PATHS (updated 2026-01-03)
+ # Lookup table of verified URL PATHS (updated 2026-03-07)
  paths <- list(
+   "2026" = list(
+     grade = "/cdereval/2025-2026_pupil-membership-statistics_schoollevelworkbook",
+     race_gender = "/cdereval/2025-2026_pupil-membership-statistics_schoollevelworkbook",
+     combined = "/cdereval/2025-2026_pupil-membership-statistics_schoollevelworkbook"
+   ),
    "2025" = list(
      grade = "/cdereval/2024-25pk-12membershipgradelevelbyschool",
      race_gender = "/cdereval/2024-25pk-12membershipraceethnicitygendergradeandschool",
@@ -232,7 +237,7 @@ scrape_available_years <- function() {
 
    if (httr::http_error(response)) {
      # Fall back to known years if scraping fails
-     return(2020:2025)
+     return(2020:2026)
    }
 
    page <- rvest::read_html(httr::content(response, "text", encoding = "UTF-8"))
@@ -269,14 +274,14 @@ scrape_available_years <- function() {
    end_years <- end_years[end_years >= 2015 & end_years <= as.integer(format(Sys.Date(), "%Y")) + 1]
 
    if (length(end_years) == 0) {
-     return(2020:2025)  # Fallback
+     return(2020:2026)  # Fallback
    }
 
    end_years
 
  }, error = function(e) {
    # Fall back to known years
-   2020:2025
+   2020:2026
  })
 }
 

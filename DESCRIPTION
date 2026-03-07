@@ -1,8 +1,8 @@
 Package: coschooldata
 Title: Colorado School Data
-Version: 0.1.0
+Version: 0.1.1
 Authors@R:
-    person("Al", "Martin", , "almartin@example.com", role = c("aut", "cre"))
+    person("Andy", "Martin", , "almartin@gmail.com", role = c("aut", "cre"))
 Description: A simple, consistent interface for accessing Colorado
     school data in Python and R.
 License: MIT + file LICENSE

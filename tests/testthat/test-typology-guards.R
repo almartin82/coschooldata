@@ -615,7 +615,7 @@ test_that("get_available_years returns correct min and max", {
   avail <- coschooldata::get_available_years()
 
   expect_equal(avail$min_year, 2020)
-  expect_equal(avail$max_year, 2025)
+  expect_equal(avail$max_year, 2026)
 })
 
 test_that("fetch_assessment rejects COVID year 2020", {
