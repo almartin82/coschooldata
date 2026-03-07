@@ -34,8 +34,8 @@ get_available_years <- function() {
   # These are the years we can reliably support
   list(
     min_year = 2020,
-    max_year = 2025,
-    description = "Colorado enrollment data is available from 2019-20 (end_year 2020) through 2024-25 (end_year 2025). Data comes from the Student October Count collection published by the Colorado Department of Education. Note: Earlier years (2018-2019) may be available but use inconsistent URL patterns."
+    max_year = 2026,
+    description = "Colorado enrollment data is available from 2019-20 (end_year 2020) through 2025-26 (end_year 2026). Data comes from the Student October Count collection published by the Colorado Department of Education. Note: Earlier years (2018-2019) may be available but use inconsistent URL patterns."
   )
 }
 

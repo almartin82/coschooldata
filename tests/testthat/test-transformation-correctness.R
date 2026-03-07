@@ -1099,7 +1099,7 @@ test_that("get_available_years returns correct range", {
 
   expect_type(result, "list")
   expect_equal(result$min_year, 2020)
-  expect_equal(result$max_year, 2025)
+  expect_equal(result$max_year, 2026)
   expect_true(nchar(result$description) > 0)
 })
 
